@@ -1,0 +1,11 @@
+[
+  {"age_months": 0, "age_label": "à la naissance", "age_label_en": "at birth", "vaccines": ["BCG", "Polio (VPO)"]},
+  {"age_months": 1.5, "age_label": "6 semaines", "age_label_en": "6 weeks", "vaccines": ["Penta", "Polio (VPO)", "Pneumo", "Rotavirus"]},
+  {"age_months": 2.5, "age_label": "10 semaines", "age_label_en": "10 weeks", "vaccines": ["Penta", "Polio (VPO)", "Pneumo", "Rotavirus"]},
+  {"age_months": 3.5, "age_label": "14 semaines", "age_label_en": "14 weeks", "vaccines": ["Penta", "Polio (VPO)", "Pneumo", "Rotavirus", "VPI"]},
+  {"age_months": 6, "age_label": "6 mois", "age_label_en": "6 months", "vaccines": ["Mosquirix"]},
+  {"age_months": 7, "age_label": "7 mois", "age_label_en": "7 months", "vaccines": ["Mosquirix"]},
+  {"age_months": 9, "age_label": "9 mois", "age_label_en": "9 months", "vaccines": ["Mosquirix", "RR (Rougeole-Rubéole)", "VAA (Fièvre jaune)"]},
+  {"age_months": 15, "age_label": "15 mois", "age_label_en": "15 months", "vaccines": ["RR (Rougeole-Rubéole)"]},
+  {"age_months": 24, "age_label": "24 mois", "age_label_en": "24 months", "vaccines": ["Mosquirix"]}
+]

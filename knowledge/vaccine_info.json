@@ -1,0 +1,178 @@
+{
+  "BCG": {
+    "route": "intradermique (sous la peau)",
+    "route_en": "intradermal (under the skin)",
+    "side_effects": [
+      "petite réaction/bouton au point d'injection, normal"
+    ],
+    "side_effects_en": [
+      "small reaction/bump at the injection site, normal"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre les formes graves de tuberculose chez le jeune enfant",
+    "why_it_matters_en": "protects young children against severe forms of tuberculosis",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "tuberculose",
+    "disease_label_en": "tuberculosis"
+  },
+  "Polio (VPO)": {
+    "route": "orale (gouttes dans la bouche)",
+    "route_en": "oral (drops in the mouth)",
+    "side_effects": [
+      "généralement aucun effet notable"
+    ],
+    "side_effects_en": [
+      "generally no notable side effects"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre la poliomyélite, qui peut causer une paralysie",
+    "why_it_matters_en": "protects against poliomyelitis, which can cause paralysis",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "poliomyélite (orale)",
+    "disease_label_en": "polio (oral)"
+  },
+  "VPI": {
+    "route": "intramusculaire",
+    "route_en": "intramuscular",
+    "side_effects": [
+      "douleur locale possible, fièvre légère"
+    ],
+    "side_effects_en": [
+      "possible local pain, mild fever"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "renforce la protection contre la poliomyélite en complément du vaccin oral",
+    "why_it_matters_en": "strengthens protection against poliomyelitis alongside the oral vaccine",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "poliomyélite (injectable)",
+    "disease_label_en": "polio (injectable)"
+  },
+  "Penta": {
+    "route": "intramusculaire",
+    "route_en": "intramuscular",
+    "side_effects": [
+      "fièvre",
+      "douleur au point d'injection",
+      "irritabilité"
+    ],
+    "side_effects_en": [
+      "fever",
+      "pain at the injection site",
+      "irritability"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre la diphtérie, le tétanos, la coqueluche, l'hépatite B et l'Haemophilus influenzae de type b",
+    "why_it_matters_en": "protects against diphtheria, tetanus, whooping cough, hepatitis B and Haemophilus influenzae type b",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "diphtérie, tétanos, coqueluche, hépatite B, Hib",
+    "disease_label_en": "diphtheria, tetanus, whooping cough, hepatitis B, Hib"
+  },
+  "Pneumo": {
+    "route": "intramusculaire",
+    "route_en": "intramuscular",
+    "side_effects": [
+      "fièvre",
+      "douleur au point d'injection"
+    ],
+    "side_effects_en": [
+      "fever",
+      "pain at the injection site"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre des infections graves à pneumocoque (pneumonie, méningite)",
+    "why_it_matters_en": "protects against serious pneumococcal infections (pneumonia, meningitis)",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "infections à pneumocoque",
+    "disease_label_en": "pneumococcal disease"
+  },
+  "Rotavirus": {
+    "route": "orale",
+    "route_en": "oral",
+    "side_effects": [
+      "diarrhée légère possible",
+      "vomissements rares"
+    ],
+    "side_effects_en": [
+      "possible mild diarrhea",
+      "rare vomiting"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre les diarrhées sévères à rotavirus",
+    "why_it_matters_en": "protects against severe rotavirus diarrhea",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "diarrhée à rotavirus",
+    "disease_label_en": "rotavirus diarrhea"
+  },
+  "Mosquirix": {
+    "route": "intramusculaire",
+    "route_en": "intramuscular",
+    "side_effects": [
+      "fièvre",
+      "douleur au point d'injection"
+    ],
+    "side_effects_en": [
+      "fever",
+      "pain at the injection site"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre le paludisme, première cause de mortalité infantile évitable au Cameroun",
+    "why_it_matters_en": "protects against malaria, the leading cause of preventable child mortality in Cameroon",
+    "source": "PEV Cameroun / OMS — introduit le 22 janvier 2024, schéma confirmé 6/7/9/24 mois",
+    "confidence": "confirmé",
+    "disease_label": "paludisme",
+    "disease_label_en": "malaria"
+  },
+  "RR (Rougeole-Rubéole)": {
+    "route": "intramusculaire ou sous-cutanée",
+    "route_en": "intramuscular or subcutaneous",
+    "side_effects": [
+      "fièvre légère possible 5 à 12 jours après",
+      "petite éruption cutanée rare"
+    ],
+    "side_effects_en": [
+      "possible mild fever 5 to 12 days later",
+      "rare small skin rash"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre la rougeole et la rubéole, maladies très contagieuses et parfois graves",
+    "why_it_matters_en": "protects against measles and rubella, highly contagious and sometimes serious diseases",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "rougeole, rubéole",
+    "disease_label_en": "measles, rubella"
+  },
+  "VAA (Fièvre jaune)": {
+    "route": "sous-cutanée",
+    "route_en": "subcutaneous",
+    "side_effects": [
+      "fièvre légère possible",
+      "douleur au point d'injection"
+    ],
+    "side_effects_en": [
+      "possible mild fever",
+      "pain at the injection site"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre la fièvre jaune, maladie virale grave transmise par moustique",
+    "why_it_matters_en": "protects against yellow fever, a serious mosquito-borne viral disease",
+    "source": "PEV Cameroun / OMS",
+    "confidence": "confirmé",
+    "disease_label": "fièvre jaune",
+    "disease_label_en": "yellow fever"
+  }
+}

@@ -1,0 +1,7 @@
+[
+  {"vaccine": "Typhoïde", "vaccine_en": "Typhoid", "age_min_months": 24, "note": "rappel tous les 3 ans", "note_en": "booster every 3 years", "pev_status": "hors-PEV — payant, en clinique privée", "pev_status_en": "outside EPI — paid, at a private clinic"},
+  {"vaccine": "Méningite ACWY135", "vaccine_en": "Meningitis ACWY135", "age_min_months": 24, "note": "1 dose", "note_en": "1 dose", "pev_status": "hors-PEV — payant, en clinique privée", "pev_status_en": "outside EPI — paid, at a private clinic"},
+  {"vaccine": "Hépatite A", "vaccine_en": "Hepatitis A", "age_min_months": 12, "note": "", "note_en": "", "pev_status": "hors-PEV — payant, en clinique privée", "pev_status_en": "outside EPI — paid, at a private clinic"},
+  {"vaccine": "Grippe", "vaccine_en": "Flu", "age_min_months": 6, "note": "annuelle, recommandée si enfant fragile", "note_en": "yearly, recommended for fragile children", "pev_status": "hors-PEV — payant, en clinique privée", "pev_status_en": "outside EPI — paid, at a private clinic"},
+  {"vaccine": "Vitamine A + déparasitage", "vaccine_en": "Vitamin A + deworming", "age_min_months": 6, "note": "tous les 6 mois jusqu'à 5 ans", "note_en": "every 6 months until age 5", "pev_status": "gratuit en centre de santé, mais ce n'est pas un vaccin du PEV à proprement parler", "pev_status_en": "free at health centers, but not strictly an EPI vaccine"}
+]
