@@ -1,0 +1,13 @@
+# AUCUNE dépendance externe requise, ni pour le mode règles (cli.py) ni pour
+# le mode LLM réel (cli_llm.py) : tout tourne avec la bibliothèque standard
+# Python 3.11+ (json, urllib). C'est volontaire, pour éviter les soucis de
+# compilation sur Termux/Android (ex: le package openai tire "jiter", qui
+# nécessite un toolchain Rust absent sur Android — cf. README).
+#
+# Rien à installer, tu peux ignorer ce fichier pour l'instant.
+#
+# Prévu pour la suite (P1 — Web App / RAG plus riche si la base grossit) :
+# fastapi
+# uvicorn
+# chromadb
+# sentence-transformers
