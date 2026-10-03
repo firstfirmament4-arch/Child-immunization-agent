@@ -11,8 +11,12 @@ from tools.knowledge_tools import (
     search_hors_pev,
     correct_misconception,
     find_missing_vaccines,
+    get_other_interventions,
 )
-from tools.session_tools import set_age, add_vaccine, generate_followup_summary
+from tools.session_tools import (
+    set_age, add_vaccine, generate_followup_summary,
+    start_new_child as _start_new_child, list_children_overview,
+)
 
 
 class AgentToolbox:
@@ -40,6 +44,13 @@ class AgentToolbox:
             add_vaccine(self.session, vaccine_name)
             return {"status": "ok", "vaccine": vaccine_name, "recorded_as": "reçu"}
         return {"status": "ok", "vaccine": vaccine_name, "recorded_as": "non reçu (rien à enregistrer)"}
+
+    def get_other_interventions(self) -> dict:
+        """Vitamine A, déparasitage, TPIn, MILDA dus à l'âge actuel — jamais mélangés aux vaccins."""
+        if self.session.get("age_months") is None:
+            return {"error": "âge de l'enfant inconnu"}
+        lang = self.session.get("language", "fr")
+        return {"interventions": get_other_interventions(self.session["age_months"], lang)}
 
     def get_missing_vaccines(self) -> dict:
         if self.session.get("age_months") is None:
@@ -73,6 +84,14 @@ class AgentToolbox:
             missing = find_missing_vaccines(self.session["age_months"], self.session["vaccines_received"])
         summary_text = generate_followup_summary(self.session, missing or [], self.session.get("language", "fr"))
         return {"summary": summary_text}
+
+    def start_new_child(self) -> dict:
+        """Archive l'enfant actif et repart de zéro pour un nouvel enfant du même parent."""
+        return _start_new_child(self.session)
+
+    def list_children(self) -> dict:
+        """Aperçu de tous les enfants évoqués dans cette conversation (archivés + actif)."""
+        return {"children": list_children_overview(self.session, self.session.get("language", "fr"))}
 
 
 TOOLS_SCHEMA = [
@@ -152,8 +171,32 @@ TOOLS_SCHEMA = [
     {
         "type": "function",
         "function": {
+            "name": "get_other_interventions",
+            "description": "Retourne les interventions non-vaccinales dues à l'âge actuel (vitamine A, déparasitage, TPIn, distribution de moustiquaire MILDA). Ce ne sont PAS des vaccins — ne jamais les présenter comme tels. Appelle ceci en complément de get_missing_vaccines pour donner une vue complète.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "generate_summary",
             "description": "Génère une fiche de suivi vaccinal textuelle pour le parent (âge, vaccins reçus, vaccins à vérifier). Appelle ceci quand le parent demande un résumé, ou spontanément une fois que tu as recueilli assez d'informations (âge + au moins une réponse sur les vaccins).",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "start_new_child",
+            "description": "Archive l'enfant dont on parlait et repart de zéro pour un NOUVEL enfant du même parent. Appelle ceci uniquement quand le parent indique explicitement vouloir parler d'un autre enfant (ex: \"et mon deuxième enfant...\", \"j'ai aussi une fille de 2 ans\"). Ne l'appelle jamais pour corriger ou compléter des informations sur l'enfant actuel.",
+            "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "list_children",
+            "description": "Retourne un aperçu de tous les enfants évoqués dans la conversation (nombre, âge, vaccins). Appelle ceci si le parent demande un récapitulatif de tous ses enfants, ou si tu dois vérifier combien d'enfants ont déjà été mentionnés.",
             "parameters": {"type": "object", "properties": {}},
         },
     },

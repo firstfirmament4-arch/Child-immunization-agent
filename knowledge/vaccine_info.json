@@ -130,8 +130,8 @@
     "pev_status_en": "EPI — free of charge",
     "why_it_matters": "protège contre le paludisme, première cause de mortalité infantile évitable au Cameroun",
     "why_it_matters_en": "protects against malaria, the leading cause of preventable child mortality in Cameroon",
-    "source": "PEV Cameroun / OMS — introduit le 22 janvier 2024, schéma confirmé 6/7/9/24 mois",
-    "confidence": "confirmé",
+    "source": "PEV Cameroun / OMS — terminologie officielle : VAP (Vaccin antipaludique). Introduit le 22 janvier 2024.",
+    "confidence": "confirmé (source officielle, 4 doses : 6, 7, 9, 24 mois)",
     "disease_label": "paludisme",
     "disease_label_en": "malaria"
   },
@@ -174,5 +174,45 @@
     "confidence": "confirmé",
     "disease_label": "fièvre jaune",
     "disease_label_en": "yellow fever"
+  },
+  "Hépatite B (dose de naissance)": {
+    "route": "intramusculaire",
+    "route_en": "intramuscular",
+    "side_effects": [
+      "fièvre légère possible",
+      "douleur au point d'injection"
+    ],
+    "side_effects_en": [
+      "possible mild fever",
+      "pain at the injection site"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège dès la naissance contre l'hépatite B, qui peut se transmettre de la mère à l'enfant",
+    "why_it_matters_en": "protects from birth against hepatitis B, which can be transmitted from mother to child",
+    "disease_label": "hépatite B",
+    "disease_label_en": "hepatitis B",
+    "source": "MINSANTE / PEV Cameroun — calendrier officiel",
+    "confidence": "confirmé (source officielle)"
+  },
+  "Men A/ACYW135": {
+    "route": "intramusculaire",
+    "route_en": "intramuscular",
+    "side_effects": [
+      "fièvre",
+      "douleur au point d'injection"
+    ],
+    "side_effects_en": [
+      "fever",
+      "pain at the injection site"
+    ],
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "why_it_matters": "protège contre les méningites et autres infections sévères à méningocoques",
+    "why_it_matters_en": "protects against meningitis and other severe meningococcal infections",
+    "disease_label": "méningites à méningocoques",
+    "disease_label_en": "meningococcal meningitis",
+    "source": "MINSANTE / PEV Cameroun — calendrier officiel",
+    "confidence": "confirmé (source officielle)"
   }
 }

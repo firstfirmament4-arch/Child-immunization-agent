@@ -145,6 +145,93 @@ def test_round_limit_fallback():
         _os.environ.pop("LLM_BASE_URL", None)
 
 
+def test_multi_child():
+    from agent.toolbox import AgentToolbox
+    s = new_session(); s["language"] = "fr"
+    tb = AgentToolbox(s)
+    tb.record_child_age(9)
+    tb.record_vaccine_dose("BCG", True)
+    tb.get_missing_vaccines()
+    archived = tb.start_new_child()
+    check("Multi-enfants — archivage du premier enfant", archived["archived_children_count"] == 1)
+    tb.record_child_age(18)
+    tb.record_vaccine_dose("BCG", True)
+    tb.record_vaccine_dose("Penta", True)
+    tb.get_missing_vaccines()
+    overview = tb.list_children()["children"]
+    check("Multi-enfants — deux enfants distincts dans l'aperçu", len(overview) == 2 and overview[0]["age_months"] == 9 and overview[1]["age_months"] == 18)
+    summary = tb.generate_summary()["summary"]
+    check("Multi-enfants — la fiche contient les deux enfants séparément", "Enfant 1" in summary and "Enfant 2" in summary)
+    check("Multi-enfants — pas de mélange des vaccins entre enfants", summary.count("Vaccins déjà reçus (déclarés) : BCG\n") >= 1 and "BCG, Penta" in summary)
+
+
+def test_visible_reasoning_trace():
+    import threading
+    import http.server
+    import os as _os
+    from agent.llm_agent import create_llm_session, handle_message_llm
+
+    state = {"n": 0}
+
+    class H(http.server.BaseHTTPRequestHandler):
+        def do_POST(self):
+            self.rfile.read(int(self.headers["Content-Length"]))
+            state["n"] += 1
+            if state["n"] == 1:
+                msg = {"role": "assistant", "content": None, "tool_calls": [
+                    {"id": "a", "type": "function", "function": {"name": "record_child_age", "arguments": '{"age_months":9}'}}]}
+            elif state["n"] == 2:
+                msg = {"role": "assistant", "content": None, "tool_calls": [
+                    {"id": "b", "type": "function", "function": {"name": "get_missing_vaccines", "arguments": "{}"}}]}
+            else:
+                msg = {"role": "assistant", "content": "Voici ce qui semble à vérifier."}
+            body = json.dumps({"choices": [{"message": msg}]}).encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def log_message(self, *a):
+            pass
+
+    srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    _os.environ["LLM_API_KEY"] = "k"
+    _os.environ["LLM_BASE_URL"] = f"http://127.0.0.1:{srv.server_address[1]}"
+    try:
+        s = create_llm_session("fr")
+        r = handle_message_llm(s, "mon enfant a 9 mois")
+        check("Trace visible — la réponse commence par une trace de vérification", r.startswith("_🔍"))
+        check("Trace visible — le texte final de l'agent est bien présent après la trace", "vérifier" in r)
+        clean_history = all("🔍" not in (m.get("content") or "") for m in s["llm_messages"] if isinstance(m.get("content"), str))
+        check("Trace visible — mémoire envoyée au modèle non polluée par la trace affichée", clean_history)
+    finally:
+        srv.shutdown()
+        _os.environ.pop("LLM_API_KEY", None)
+        _os.environ.pop("LLM_BASE_URL", None)
+
+
+def test_official_calendar_corrections():
+    """Corrections issues du document officiel MINSANTE/PEV reçu le 2 octobre — ne doivent jamais régresser."""
+    from tools.knowledge_tools import find_missing_vaccines, get_other_interventions, search_hors_pev
+
+    vpi_count = sum(1 for m in find_missing_vaccines(9, {}) if m["vaccine"] == "VPI")
+    check("Officiel — VPI a bien 2 doses (14 semaines + 9 mois)", vpi_count == 2)
+
+    hepb = [m["vaccine"] for m in find_missing_vaccines(0, {}) if "Hépatite B" in m["vaccine"]]
+    check("Officiel — dose de naissance d'Hépatite B présente", len(hepb) == 1)
+
+    men = [m["vaccine"] for m in find_missing_vaccines(15, {}) if "Men" in m["vaccine"]]
+    check("Officiel — vaccin méningococcique présent à 15 mois (PEV, gratuit)", len(men) == 1)
+    check("Officiel — méningite retirée de hors-PEV (elle est gratuite)", search_hors_pev("méningite") == [])
+
+    autres_9m = get_other_interventions(9, "fr")
+    tpin = next((a for a in autres_9m if a["name"] == "TPIn"), None)
+    check("Officiel — TPIn présent avec sa restriction régionale", tpin is not None and "Adamaoua" in tpin["regional_note"])
+    check("Officiel — vitamine A/MILDA distinctes des vaccins (pas dans find_missing_vaccines)",
+          not any("Vitamine" in m["vaccine"] or "MILDA" in m["vaccine"] for m in find_missing_vaccines(9, {})))
+
+
 def run_all():
     test_record_age_and_over_five_warning()
     test_multi_dose_via_toolbox()
@@ -154,6 +241,9 @@ def run_all():
     test_summary_bilingual()
     test_history_trimming()
     test_round_limit_fallback()
+    test_multi_child()
+    test_visible_reasoning_trace()
+    test_official_calendar_corrections()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")
     if FAILED:
         sys.exit(1)

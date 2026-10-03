@@ -50,6 +50,34 @@ def correct_misconception(message: str):
     return None
 
 
+def get_other_interventions(age_months: float, language: str = "fr"):
+    """
+    Interventions non-vaccinales dues à cet âge (vitamine A, déparasitage, TPIn, MILDA),
+    avec leur fiche d'info. Volontairement séparé du suivi des vaccins (pas de comptage de
+    doses ici) : ce ne sont pas des vaccins, on ne les mélange jamais dans le même calcul.
+    """
+    lang_suffix = "_en" if language == "en" else ""
+    info = _load("autres_interventions.json")
+    visits = search_pev_calendar(age_months)
+    seen = set()
+    out = []
+    for visit in visits:
+        for name in visit.get("autres", []):
+            if name in seen:
+                continue
+            seen.add(name)
+            entry = info.get(name, {})
+            out.append({
+                "name": name,
+                "label": entry.get(f"nom_complet{lang_suffix}") or entry.get("nom_complet") or name,
+                "why_it_matters": entry.get(f"why_it_matters{lang_suffix}") or entry.get("why_it_matters"),
+                "regional_note": entry.get(f"regional_note{lang_suffix}") or entry.get("regional_note") or "",
+                "pev_status": entry.get(f"pev_status{lang_suffix}") or entry.get("pev_status"),
+                "due_since": visit.get(f"age_label{lang_suffix}") or visit["age_label"],
+            })
+    return out
+
+
 def find_missing_vaccines(age_months: float, vaccines_received: dict):
     """
     Compare l'âge de l'enfant aux doses confirmées par vaccin (comptage, pas juste oui/non),

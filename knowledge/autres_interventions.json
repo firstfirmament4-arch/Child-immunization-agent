@@ -1,0 +1,58 @@
+{
+  "TPIn": {
+    "nom_complet": "Traitement préventif intermittent du nourrisson",
+    "nom_complet_en": "Intermittent preventive treatment for infants",
+    "route": "orale",
+    "route_en": "oral",
+    "why_it_matters": "réduit le risque de paludisme chez le nourrisson, dans le cadre de la chimioprophylaxie périenne",
+    "why_it_matters_en": "reduces malaria risk in infants, as part of seasonal malaria chemoprevention",
+    "regional_note": "Appliqué dans 8 régions du Cameroun, à l'exception de l'Extrême-Nord et de l'Adamaoua.",
+    "regional_note_en": "Applied in 8 regions of Cameroon, except the Far North and Adamawa regions.",
+    "pev_status": "PEV — gratuit (selon la région)",
+    "pev_status_en": "EPI — free of charge (region-dependent)",
+    "source": "MINSANTE / PEV Cameroun — calendrier officiel",
+    "confidence": "confirmé (source officielle)"
+  },
+  "Vitamine A": {
+    "nom_complet": "Supplémentation en vitamine A",
+    "nom_complet_en": "Vitamin A supplementation",
+    "route": "orale",
+    "route_en": "oral",
+    "why_it_matters": "prévient la carence en vitamine A chez l'enfant",
+    "why_it_matters_en": "prevents vitamin A deficiency in children",
+    "regional_note": "",
+    "regional_note_en": "",
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "source": "MINSANTE / PEV Cameroun — calendrier officiel",
+    "confidence": "confirmé (source officielle)"
+  },
+  "Mébendazole": {
+    "nom_complet": "Déparasitage",
+    "nom_complet_en": "Deworming",
+    "route": "orale",
+    "route_en": "oral",
+    "why_it_matters": "traite et prévient les parasitoses intestinales",
+    "why_it_matters_en": "treats and prevents intestinal parasites",
+    "regional_note": "",
+    "regional_note_en": "",
+    "pev_status": "PEV — gratuit",
+    "pev_status_en": "EPI — free of charge",
+    "source": "MINSANTE / PEV Cameroun — calendrier officiel",
+    "confidence": "confirmé (source officielle)"
+  },
+  "MILDA": {
+    "nom_complet": "Moustiquaire imprégnée d'insecticide à longue durée d'action",
+    "nom_complet_en": "Long-lasting insecticide-treated mosquito net",
+    "route": null,
+    "route_en": null,
+    "why_it_matters": "protège contre les piqûres de moustique et donc contre le paludisme",
+    "why_it_matters_en": "protects against mosquito bites and therefore against malaria",
+    "regional_note": "",
+    "regional_note_en": "",
+    "pev_status": "PEV — gratuit (distribution)",
+    "pev_status_en": "EPI — free of charge (distribution)",
+    "source": "MINSANTE / PEV Cameroun — calendrier officiel",
+    "confidence": "confirmé (source officielle)"
+  }
+}

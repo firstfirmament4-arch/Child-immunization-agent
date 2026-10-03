@@ -3,6 +3,65 @@
 Agent conversationnel anonyme d'aide au suivi vaccinal (0–5 ans, Cameroun).
 Prototype P0 : fonctionne **entièrement hors-ligne**, sans clé API, avec Python 3.11+ seul.
 
+## Multi-enfants (mode LLM) et repli automatique (nouveau)
+
+**Plusieurs enfants dans une même conversation** : si un parent dit "et mon deuxième enfant...",
+l'agent archive proprement les infos de l'enfant précédent (`start_new_child`) et repart de zéro,
+sans jamais mélanger les deux. `list_children` donne un aperçu de tous les enfants évoqués, et la
+fiche de suivi (`generate_summary`) devient automatiquement multi-sections ("Enfant 1", "Enfant 2"...)
+dès qu'il y en a plus d'un — sans rien changer pour le cas normal à un seul enfant.
+Non disponible en mode règles hors-ligne (limitation connue, documentée).
+
+**Repli automatique vers le mode règles** : si l'appel au LLM échoue (panne, quota épuisé) au
+milieu d'une conversation, l'agent ne laisse plus jamais le parent sans réponse. Pour ce tour
+précis, il retombe sur le moteur déterministe du mode règles (qui lit les mêmes données de
+session), avec une petite note indiquant le mode simplifié temporaire. Si le LLM revient au tour
+suivant, la conversation redevient fluide automatiquement. Limitation connue : le mode règles ne
+gère qu'un seul enfant à la fois, donc si plusieurs enfants ont été enregistrés et que le repli
+s'active, seul l'enfant actif est traité pour ce tour.
+
+## Base de connaissances verrouillée sur la source officielle (2 octobre 2026)
+
+Document HTML officiel du MINSANTE/PEV obtenu directement auprès du ministère, archivé dans
+`knowledge/sources/calendrier-vaccinal-minsante-pev.html`. Corrections importantes apportées :
+
+- **VPI a en réalité 2 doses** (14 semaines + 9 mois), pas une seule comme avant — correction
+  de sécurité : notre comptage multi-doses aurait déclaré ce vaccin "terminé" trop tôt.
+- **Dose de naissance d'Hépatite B** ajoutée (distincte du Penta, qui en contient aussi).
+- **Le vaccin méningococcique (Men A/ACYW135) est gratuit, dans le PEV officiel, à 15 mois** —
+  on l'avait classé par erreur comme hors-PEV/payant sur la base d'une source non vérifiée.
+  Retiré de `hors_pev.json`, ajouté au calendrier officiel.
+- **Nouvelle catégorie "autres interventions"** (non-vaccinales, jamais mélangées aux vaccins) :
+  vitamine A, déparasitage (Mébendazole), TPIn (traitement antipaludique — avec sa restriction
+  régionale : pas appliqué dans l'Extrême-Nord ni l'Adamaoua), distribution de moustiquaires
+  (MILDA). Accessibles via le nouveau tool `get_other_interventions`.
+
+Tous les anciens tests sont passés sans modification grâce à une extension additive (le format
+`vaccines` n'a pas changé, on a juste ajouté un champ `autres` à côté) — zéro régression malgré
+une réécriture substantielle des données.
+
+## Trace de raisonnement visible (nouveau)
+
+Retour terrain de la chef médecin des vaccinations : l'agent "faisait trop chatbot". Diagnostic :
+tout le travail réel (consultation du calendrier, calcul des doses, vérification des croyances)
+était invisible — de l'extérieur, un chatbot à réponses toutes faites produit le même rendu visuel.
+
+Chaque réponse du mode LLM affiche maintenant une courte trace en italique au-dessus du texte,
+quand un outil a réellement été utilisé (ex: `_🔍 Calendrier PEV officiel consulté — 3 dose(s) en
+attente_`). Cette trace n'est jamais envoyée dans l'historique transmis au modèle (pas de pollution
+du contexte ni de tokens gaspillés) — elle n'existe que dans ce qui est montré au parent. Le repli
+déterministe (panne LLM) a aussi été harmonisé : sa note d'avertissement apparaît maintenant en
+haut du message, dans le même style, plutôt qu'en bas où elle pouvait passer inaperçue.
+
+Le system prompt a aussi été ajusté contre l'effet "formules toutes faites" : variation des
+formulations, réaction à ce que dit le parent avant d'enchaîner, une seule question à la fois.
+
+⚠️ **Avant de conclure que c'est un problème de style de conversation** : si l'agent semble
+"scripté" en usage réel (pas en test contrôlé), vérifier d'abord les logs du service déployé — le
+repli automatique vers le mode règles (ajouté juste avant) peut se déclencher silencieusement si
+le quota gratuit du fournisseur LLM est saturé, produisant exactement cette impression sans que ce
+soit un problème de conception.
+
 ## Déploiement en ligne (Render, gratuit, sans carte bancaire)
 
 Vérifié en septembre 2026 : Render offre toujours un vrai tier gratuit (512 Mo RAM, 750 h

@@ -66,9 +66,16 @@ en clinique privée).
 - Dès qu'un vaccin précis est confirmé reçu OU explicitement pas reçu, appelle record_vaccine_dose. \
 Ne suppose jamais qu'un vaccin est reçu sans confirmation explicite du parent.
 - Si le parent exprime une croyance sur les vaccins (peur, doute), appelle check_misconception avant de répondre.
-- Avant d'annoncer un retard ou de faire un résumé, appelle get_missing_vaccines.
+- Avant d'annoncer un retard ou de faire un résumé, appelle get_missing_vaccines. Pense aussi à \
+appeler get_other_interventions pour mentionner la vitamine A, le déparasitage, le TPIn (traitement \
+antipaludique, avec sa restriction régionale) et la moustiquaire (MILDA) quand ils sont dus — mais \
+ne les appelle JAMAIS des vaccins, ce sont des interventions différentes du calendrier officiel.
 - Une fois que tu as recueilli l'âge et au moins une information sur les vaccins reçus, propose \
 spontanément un résumé (generate_summary) ou fais-le si le parent le demande.
+- Si le parent indique explicitement vouloir parler d'un AUTRE enfant (ex: "et mon deuxième..."), \
+appelle start_new_child avant de recueillir les infos du nouvel enfant. Ne mélange jamais les \
+informations de deux enfants différents. Si le parent demande un récapitulatif global, appelle \
+list_children.
 - Si un outil indique qu'il ne trouve pas l'information (vaccin inconnu, etc.), dis-le clairement au \
 parent plutôt que d'inventer une réponse.
 - Si un vaccin à plusieurs doses a des doses manquantes, ne recommande JAMAIS de recommencer toute la \
@@ -79,6 +86,11 @@ N'invente JAMAIS cette information toi-même. Exemple à ne jamais reproduire : 
 vaccin contre la coqueluche, c'est le vaccin injectable contre la poliomyélite — si tu as un doute \
 sur un vaccin, appelle get_vaccine_info au lieu de deviner.
 - Reste strictement anonyme : ne demande jamais de nom. Si le parent donne un prénom ou un nom, ne le répète JAMAIS et ne l'utilise jamais dans tes réponses ; dis simplement \"votre enfant\" (\"your child\" en anglais), et précise gentiment qu'aucun nom n'est nécessaire.
+- Varie tes formulations d'un message à l'autre : ne répète pas toujours la même structure ou les \
+mêmes mots d'ouverture (évite de commencer systématiquement par \"Merci\"). Réagis d'abord à ce que \
+le parent vient de dire, avant d'enchaîner. Pose une seule question à la fois plutôt que d'empiler \
+une liste de vaccins à chaque tour. Adapte ton ton : rassure s'il semble inquiet, sois bref s'il \
+est pressé.
 - Sois chaleureux, clair, et concis — pas de jargon inutile.
 """
 
@@ -169,6 +181,38 @@ def create_llm_session(language: str = "fr") -> dict:
     return session
 
 
+TRACE_LABELS = {
+    "fr": {
+        "get_missing_vaccines": lambda args, result: f"🔍 Calendrier PEV officiel consulté — {len(result.get('missing', []))} dose(s) en attente",
+        "get_vaccine_info": lambda args, result: f"🔍 Fiche officielle consultée : {args.get('vaccine_name', '')}",
+        "get_hors_pev_info": lambda args, result: f"🔍 Statut PEV / hors-PEV vérifié : {args.get('vaccine_name', '')}",
+        "get_other_interventions": lambda args, result: f"🔍 Autres interventions du PEV vérifiées (vitamine A, déparasitage...) — {len(result.get('interventions', []))} trouvée(s)",
+        "check_misconception": lambda args, result: "🔍 Affirmation vérifiée auprès de la base de connaissances officielle" if result.get("found") else None,
+        "generate_summary": lambda args, result: "📋 Fiche de suivi générée à partir des données enregistrées",
+        "start_new_child": lambda args, result: "🧒 Nouvel enfant pris en compte, profil précédent conservé séparément",
+        "list_children": lambda args, result: f"🔍 Récapitulatif généré pour {len(result.get('children', []))} enfant(s)",
+    },
+    "en": {
+        "get_missing_vaccines": lambda args, result: f"🔍 Official EPI calendar checked — {len(result.get('missing', []))} dose(s) pending",
+        "get_vaccine_info": lambda args, result: f"🔍 Official vaccine sheet checked: {args.get('vaccine_name', '')}",
+        "get_hors_pev_info": lambda args, result: f"🔍 EPI / non-EPI status checked: {args.get('vaccine_name', '')}",
+        "get_other_interventions": lambda args, result: f"🔍 Other EPI interventions checked (vitamin A, deworming...) — {len(result.get('interventions', []))} found",
+        "check_misconception": lambda args, result: "🔍 Claim checked against the official knowledge base" if result.get("found") else None,
+        "generate_summary": lambda args, result: "📋 Follow-up sheet generated from recorded data",
+        "start_new_child": lambda args, result: "🧒 New child recorded, previous profile kept separate",
+        "list_children": lambda args, result: f"🔍 Overview generated for {len(result.get('children', []))} child(ren)",
+    },
+}
+
+
+def _build_trace_block(trace_lines: list) -> str:
+    if not trace_lines:
+        return ""
+    seen = set()
+    uniq = [line for line in trace_lines if not (line in seen or seen.add(line))]
+    return "\n".join(f"_{line}_" for line in uniq) + "\n\n"
+
+
 def handle_message_llm(session: dict, message: str) -> str:
     # Garde-fou déterministe AVANT tout appel au LLM — cf. docstring du module.
     safety = check_safety_flags(message)
@@ -193,6 +237,8 @@ def handle_message_llm(session: dict, message: str) -> str:
     session["llm_messages"] = _trim_history(session["llm_messages"]) + [{"role": "user", "content": message}]
 
     toolbox = AgentToolbox(session)
+    trace_lines = []
+    labels = TRACE_LABELS.get(session["language"], TRACE_LABELS["fr"])
 
     for _ in range(MAX_TOOL_ROUNDS):
         response_json = _post_chat_completion(base_url, api_key, model, session["llm_messages"], TOOLS_SCHEMA)
@@ -219,6 +265,11 @@ def handle_message_llm(session: dict, message: str) -> str:
                     args = {}
                 method = getattr(toolbox, fn_name, None)
                 result = method(**args) if method else {"error": f"outil inconnu: {fn_name}"}
+                tracer = labels.get(fn_name)
+                if tracer:
+                    line = tracer(args, result)
+                    if line:
+                        trace_lines.append(line)
                 session["llm_messages"].append(
                     {
                         "role": "tool",
@@ -231,14 +282,15 @@ def handle_message_llm(session: dict, message: str) -> str:
         final_text = choice.get("content") or "Désolé, je n'ai pas de réponse à formuler."
         session["llm_messages"].append({"role": "assistant", "content": final_text})
         add_turn(session, "agent", final_text)
-        return final_text
+        return _build_trace_block(trace_lines) + final_text
 
     # Le modèle n'a pas conclu en MAX_TOOL_ROUNDS échanges (rare, mais possible sur le tier
     # gratuit). Plutôt qu'un "reformulez" qui n'aide personne, on retombe sur une réponse
     # déterministe utile (même principe de défense en profondeur que le garde-fou de sécurité).
     if session.get("age_months") is not None:
         result = toolbox.get_missing_vaccines()
-        fallback = llm_client_fallback_summary(result.get("missing", []), session["language"])
+        trace = labels["get_missing_vaccines"]({}, result)
+        fallback = _build_trace_block([trace]) + llm_client_fallback_summary(result.get("missing", []), session["language"])
     else:
         fallback = {
             "fr": "Je prends plus de temps que prévu à répondre. Pour repartir sur une base claire : quel âge a votre enfant ?",

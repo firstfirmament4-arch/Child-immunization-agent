@@ -107,10 +107,26 @@ def get_entry(sid):
         return entry
 
 
+FALLBACK_NOTE = {
+    "fr": "_⚠️ Service IA momentanément indisponible — réponse simplifiée en mode hors-ligne._\n\n",
+    "en": "_⚠️ AI service temporarily unavailable — simplified offline-mode reply._\n\n",
+}
+
+
 def chat(entry: dict, message: str) -> str:
     with entry["lock"]:
         if entry["mode"] == "llm":
-            return handle_message_llm(entry["session"], message)
+            try:
+                return handle_message_llm(entry["session"], message)
+            except Exception as e:
+                # La promesse faite plus tôt : si le LLM échoue (panne, quota), on ne
+                # laisse jamais le parent sans réponse. On retombe, pour CE tour
+                # seulement, sur le moteur déterministe du mode règles — qui lit les
+                # mêmes champs de session (age_months, vaccines_received), donc rien
+                # n'est perdu. Si le service revient au tour suivant, on repasse en LLM.
+                print(f"[LLM indisponible, repli règles pour ce tour] {type(e).__name__}", file=sys.stderr)
+                lang = entry["language"] if entry["language"] in FALLBACK_NOTE else "fr"
+                return FALLBACK_NOTE[lang] + orchestrator.handle_message(entry["session"], message)
         return orchestrator.handle_message(entry["session"], message)
 
 

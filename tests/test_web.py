@@ -144,7 +144,24 @@ def test_llm_mode():
     check("Web LLM — fiche en anglais avec l'âge enregistré par l'outil", "follow-up sheet" in sm["summary"] and "8" in sm["summary"])
     os.environ["LLM_BASE_URL"] = "http://127.0.0.1:1"  # fournisseur injoignable
     s, r = call(base, "/api/chat", {"session_id": sid, "message": "hello"})
-    check("Web LLM — panne fournisseur -> 503 avec message propre (sans détails)", s == 503 and "127.0.0.1" not in r["error"])
+    check("Web LLM — panne fournisseur -> repli automatique en 200 (pas d'erreur bloquante)",
+          s == 200 and "127.0.0.1" not in r["reply"] and len(r["reply"]) > 0)
+    os.environ.pop("LLM_API_KEY", None)
+    os.environ.pop("LLM_BASE_URL", None)
+
+
+def test_llm_fallback_to_rules():
+    """Panne totale du LLM : le parent doit quand même obtenir une réponse et une fiche correctes."""
+    os.environ["LLM_API_KEY"] = "k"
+    os.environ["LLM_BASE_URL"] = "http://127.0.0.1:1"  # injoignable
+    base = serve(web.make_server("127.0.0.1", 0))
+    s, st = call(base, "/api/start", {"language": "fr"})
+    sid = st["session_id"]
+    call(base, "/api/chat", {"session_id": sid, "message": "mon enfant a 9 mois"})
+    s, r = call(base, "/api/chat", {"session_id": sid, "message": "il a reçu le BCG"})
+    check("Repli web — note de service indisponible affichée", "indisponible" in r["reply"].lower())
+    s, sm = call(base, "/api/summary", {"session_id": sid})
+    check("Repli web — fiche correcte malgré la panne totale du LLM", "9.0 mois" in sm["summary"] and "BCG" in sm["summary"])
     os.environ.pop("LLM_API_KEY", None)
     os.environ.pop("LLM_BASE_URL", None)
 
@@ -153,5 +170,6 @@ if __name__ == "__main__":
     test_rules_mode()
     test_llm_mode()
     test_guided_mode()
+    test_llm_fallback_to_rules()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")
     sys.exit(1 if FAILED else 0)
