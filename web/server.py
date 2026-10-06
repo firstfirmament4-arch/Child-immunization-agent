@@ -31,7 +31,10 @@ sys.path.insert(0, str(ROOT))
 from agent import orchestrator  # noqa: E402
 from agent.llm_agent import create_llm_session, handle_message_llm  # noqa: E402
 from agent.toolbox import AgentToolbox  # noqa: E402
-from tools.knowledge_tools import search_pev_calendar, explain_vaccine_info, find_missing_vaccines  # noqa: E402
+from tools.knowledge_tools import (  # noqa: E402
+    search_pev_calendar, explain_vaccine_info, find_missing_vaccines,
+    describe_other_intervention, _load as _load_knowledge,
+)
 from tools.session_tools import set_age, add_vaccine, generate_followup_summary  # noqa: E402
 
 INDEX_HTML = (Path(__file__).parent / "index.html").read_bytes()
@@ -159,6 +162,49 @@ def guided_checklist(age_months: float, language: str) -> list:
     return out
 
 
+def vaccine_library(language: str) -> list:
+    """Toutes les fiches vaccins du PEV, pour la Bibliothèque des vaccins (lecture seule, sans session)."""
+    lang_suffix = "_en" if language == "en" else ""
+    info = _load_knowledge("vaccine_info.json")
+    out = []
+    for name, data in info.items():
+        out.append({
+            "name": name,
+            "disease_label": data.get(f"disease_label{lang_suffix}") or data.get("disease_label") or "",
+            "route": data.get(f"route{lang_suffix}") or data.get("route") or "",
+            "side_effects": data.get(f"side_effects{lang_suffix}") or data.get("side_effects") or [],
+            "why_it_matters": data.get(f"why_it_matters{lang_suffix}") or data.get("why_it_matters") or "",
+            "pev_status": data.get(f"pev_status{lang_suffix}") or data.get("pev_status") or "",
+            "source": data.get("source", ""),
+        })
+    out.sort(key=lambda v: v["name"])
+    return out
+
+
+def calendar_overview(age_months: float, language: str) -> list:
+    """Vue exploratoire en lecture seule du calendrier (vaccins + autres interventions), par visite."""
+    lang_suffix = "_en" if language == "en" else ""
+    visits = search_pev_calendar(age_months)
+    out = []
+    for visit in visits:
+        vaccines = []
+        for name in visit.get("vaccines", []):
+            info = explain_vaccine_info(name) or {}
+            vaccines.append({"name": name, "disease_label": info.get(f"disease_label{lang_suffix}") or info.get("disease_label") or ""})
+        autres = []
+        for name in visit.get("autres", []):
+            info = describe_other_intervention(name, language)
+            if info:
+                autres.append(info)
+        if vaccines or autres:
+            out.append({
+                "age_label": visit.get(f"age_label{lang_suffix}") or visit["age_label"],
+                "vaccines": vaccines,
+                "autres": autres,
+            })
+    return out
+
+
 def guided_submit(entry: dict, age_months: float, checked: list) -> dict:
     """Enregistre l'âge + les doses cochées (une par visite cochée) et calcule ce qui manque."""
     with entry["lock"]:
@@ -233,6 +279,17 @@ class Handler(BaseHTTPRequestHandler):
                 print(f"[erreur chat] {type(e).__name__}{' (429)' if busy else ''}", file=sys.stderr)
                 key = "busy" if busy else "generic"
                 return self._json(503, {"error": ERRORS[lang][key]})
+
+        if self.path == "/api/library":
+            return self._json(200, {"vaccines": vaccine_library(entry["language"])})
+
+        if self.path == "/api/calendar":
+            try:
+                age_months = float(data.get("age_months"))
+            except (TypeError, ValueError):
+                return self._json(400, {"error": "invalid age_months"})
+            age_months = max(0.0, min(age_months, 120.0))
+            return self._json(200, {"visits": calendar_overview(age_months, entry["language"])})
 
         if self.path == "/api/guided/checklist":
             try:

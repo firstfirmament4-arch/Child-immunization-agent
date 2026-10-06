@@ -40,6 +40,29 @@ Tous les anciens tests sont passés sans modification grâce à une extension ad
 `vaccines` n'a pas changé, on a juste ajouté un champ `autres` à côté) — zéro régression malgré
 une réécriture substantielle des données.
 
+## Nouveau menu d'accueil : fini l'impression "chatbot" (3 octobre 2026)
+
+Retour terrain : la chef médecin des vaccinations trouvait l'app "trop chatbot". Diagnostic revu
+avec un document de référence (méthodologie OMS, Digital Adaptation Kit for Immunizations,
+Classification CDISAH — vérifiés comme authentiques) : le problème n'était peut-être pas la
+conversation elle-même, mais le fait que **tout**, dans l'app, ressemblait soit à un chat soit à
+un formulaire — rien ne ressemblait à une vraie plateforme avant même d'avoir cliqué.
+
+Nouveau menu d'accueil à 5 entrées, au lieu du choix binaire chat/cocher :
+- **📚 Bibliothèque des vaccins** — fiche complète par vaccin (voie, effets secondaires,
+  pourquoi c'est important, source), parcourable sans ouvrir de conversation. Données
+  entièrement réutilisées depuis `vaccine_info.json`, zéro LLM, zéro risque d'invention.
+- **📅 Calendrier** — exploration en lecture seule par âge : vaccins ET "autres interventions"
+  (vitamine A, TPIn...) clairement distingués (jamais mélangés), sans rien enregistrer.
+- **💬 Discuter avec l'agent** — le chat existant, inchangé.
+- **☑️ Cocher mes vaccins** — le mode guidé existant, inchangé.
+- **🔒 Confidentialité & limites de l'agent** — page statique : ce que l'agent peut/ne peut pas
+  faire, en toute transparence.
+
+Nouveaux points d'API, tous en lecture seule et sans LLM : `/api/library`, `/api/calendar`.
+Un bouton 🏠 permanent dans l'en-tête permet de revenir au menu depuis n'importe quel écran sans
+perdre la session en cours (contrairement à "Nouvelle conversation", qui repart de zéro).
+
 ## Trace de raisonnement visible (nouveau)
 
 Retour terrain de la chef médecin des vaccinations : l'agent "faisait trop chatbot". Diagnostic :

@@ -50,6 +50,21 @@ def correct_misconception(message: str):
     return None
 
 
+def describe_other_intervention(name: str, language: str = "fr"):
+    """Fiche d'une seule intervention non-vaccinale (vitamine A, TPIn...), pour affichage ponctuel."""
+    lang_suffix = "_en" if language == "en" else ""
+    info = _load("autres_interventions.json").get(name)
+    if not info:
+        return None
+    return {
+        "name": name,
+        "label": info.get(f"nom_complet{lang_suffix}") or info.get("nom_complet") or name,
+        "why_it_matters": info.get(f"why_it_matters{lang_suffix}") or info.get("why_it_matters"),
+        "regional_note": info.get(f"regional_note{lang_suffix}") or info.get("regional_note") or "",
+        "pev_status": info.get(f"pev_status{lang_suffix}") or info.get("pev_status"),
+    }
+
+
 def get_other_interventions(age_months: float, language: str = "fr"):
     """
     Interventions non-vaccinales dues à cet âge (vitamine A, déparasitage, TPIn, MILDA),

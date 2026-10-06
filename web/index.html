@@ -84,12 +84,26 @@
   .vaccine-row .txt .disease { font-size:.8rem; color:var(--muted); }
   #guidedResultText { text-align:left; white-space:pre-wrap; background:var(--bg); border:1px solid var(--border);
                       border-radius:.8rem; padding:.9rem; font-size:.9rem; margin:1rem 0; }
+  .menu-list .big-btn { padding:.85rem 1rem; }
+  .vaccine-card { text-align:left; border:1px solid var(--border); border-radius:.8rem; background:var(--card);
+                  margin-bottom:.6rem; box-shadow:var(--shadow); overflow:hidden; }
+  .vaccine-card summary { list-style:none; cursor:pointer; padding:.8rem .9rem; display:flex; align-items:center; gap:.6rem; }
+  .vaccine-card summary::-webkit-details-marker { display:none; }
+  .vaccine-card summary .vname { font-weight:700; flex:1; }
+  .vaccine-card summary .vdisease { font-size:.8rem; color:var(--muted); }
+  .vaccine-card .vbody { padding:0 .9rem .9rem; font-size:.88rem; line-height:1.5; }
+  .vaccine-card .vbody .row-line { margin:.35rem 0; }
+  .vaccine-card .vbody b { color:var(--muted); font-weight:600; }
+  .tag-autre { display:inline-block; font-size:.7rem; padding:.1rem .5rem; border-radius:99px; background:var(--warn); color:var(--muted); margin-left:.4rem; }
+  .cal-item { padding:.3rem 0; }
+
 </style>
 </head>
 <body>
 <header>
   <h1 id="title">Vaccins de mon enfant</h1>
   <span class="badge" id="mode" hidden></span>
+  <button class="ghost" id="homeBtn" hidden>🏠</button>
   <button class="ghost" id="restart" hidden></button>
 </header>
 
@@ -105,12 +119,37 @@
   </section>
 
   <section id="modeSelect" class="screen">
-    <div class="centered">
+    <div class="centered menu-list">
       <h2 id="modeTitle"></h2>
       <p class="sub" id="modeSub"></p>
+      <button class="big-btn" id="chooseLibrary"><span class="ic">📚</span> <span id="chooseLibraryLabel"></span></button>
+      <button class="big-btn" id="chooseCalendar"><span class="ic">📅</span> <span id="chooseCalendarLabel"></span></button>
       <button class="big-btn" id="chooseChat"><span class="ic">💬</span> <span id="chooseChatLabel"></span></button>
       <button class="big-btn" id="chooseGuided"><span class="ic">☑️</span> <span id="chooseGuidedLabel"></span></button>
+      <button class="big-btn" id="choosePrivacy"><span class="ic">🔒</span> <span id="choosePrivacyLabel"></span></button>
     </div>
+  </section>
+
+  <section id="library" class="screen">
+    <div class="centered">
+      <h2 id="libraryTitle"></h2>
+      <p class="sub" id="librarySub"></p>
+      <div id="libraryBody"></div>
+    </div>
+  </section>
+
+  <section id="calendarView" class="screen">
+    <div class="centered">
+      <h2 id="calendarTitle"></h2>
+      <p class="sub" id="calendarSub"></p>
+      <select id="calAgeSelect"></select>
+      <button class="primary" id="calAgeNext"></button>
+      <div id="calendarBody" style="margin-top:1rem; text-align:left"></div>
+    </div>
+  </section>
+
+  <section id="privacy" class="screen">
+    <div class="centered" id="privacyBody" style="text-align:left"></div>
   </section>
 
   <section id="guidedAge" class="screen">
@@ -172,7 +211,16 @@ const UI = {
         checklistSub:"Cochez uniquement ce qui a déjà été donné. Ne cochez rien si vous n'êtes pas sûr(e).",
         checklistSubmit:"Voir le résultat", resultTitle:"Voici ce que nous avons trouvé",
         resultChat:"💬 Poser une question à l'agent", resultRestart:"Recommencer",
-        ageOptionBirth:"À la naissance", ageOptionMonth:"mois", ageOptionMonths:"mois" },
+        ageOptionBirth:"À la naissance", ageOptionMonth:"mois", ageOptionMonths:"mois",
+        home:"Accueil", chooseLibrary:"Bibliothèque des vaccins", chooseCalendar:"Explorer le calendrier",
+        choosePrivacy:"Confidentialité & limites de l'agent",
+        libraryTitle:"Bibliothèque des vaccins", librarySub:"Touchez un vaccin pour en savoir plus. Informations issues du calendrier officiel du PEV Cameroun.",
+        calendarTitle:"Calendrier vaccinal", calendarSub:"Choisissez un âge pour voir ce qui est prévu — sans rien enregistrer.",
+        calAgeNext:"Afficher", noneDueYet:"Rien n'est encore prévu à cet âge.",
+        routeLabel:"Voie d'administration", sideEffectsLabel:"Effets secondaires possibles", whyLabel:"Pourquoi c'est important",
+        statusLabel:"Statut", sourceLabel:"Source", otherIntervention:"autre intervention (pas un vaccin)",
+        privacyTitle:"Confidentialité & limites de l'agent",
+        privacyBody:"<p><b>Aucune donnée personnelle.</b> Pas de nom, pas de compte, rien n'est enregistré sur un serveur de façon permanente.</p><p><b>L'agent PEUT :</b> informer sur les vaccins, suivre le calendrier, répondre à vos questions, corriger une idée reçue avec une source officielle, générer une fiche de suivi.</p><p><b>L'agent NE PEUT PAS :</b> poser un diagnostic, prescrire un traitement, décider à la place d'un professionnel de santé, ou remplacer une consultation médicale.</p><p>En cas de doute ou d'inquiétude concernant votre enfant, adressez-vous toujours à un centre de santé.</p>" },
   en: { title:"My child's vaccines", placeholder:"Type your message…", send:"Send", summary:"📋 Follow-up sheet",
         restart:"New conversation", copy:"Copy", copied:"Copied ✓", close:"Close", typing:"…",
         summaryTitle:"Vaccination follow-up sheet", rulesNote:"Offline mode (French only)",
@@ -185,7 +233,16 @@ const UI = {
         checklistSub:"Only check what has already been given. Leave unchecked if unsure.",
         checklistSubmit:"See result", resultTitle:"Here is what we found",
         resultChat:"💬 Ask the agent a question", resultRestart:"Start over",
-        ageOptionBirth:"At birth", ageOptionMonth:"month", ageOptionMonths:"months" }
+        ageOptionBirth:"At birth", ageOptionMonth:"month", ageOptionMonths:"months",
+        home:"Home", chooseLibrary:"Vaccine library", chooseCalendar:"Explore the calendar",
+        choosePrivacy:"Privacy & agent limits",
+        libraryTitle:"Vaccine library", librarySub:"Tap a vaccine to learn more. Information from Cameroon's official EPI calendar.",
+        calendarTitle:"Immunization calendar", calendarSub:"Pick an age to see what's due — nothing is recorded.",
+        calAgeNext:"Show", noneDueYet:"Nothing is due yet at this age.",
+        routeLabel:"Route of administration", sideEffectsLabel:"Possible side effects", whyLabel:"Why it matters",
+        statusLabel:"Status", sourceLabel:"Source", otherIntervention:"other intervention (not a vaccine)",
+        privacyTitle:"Privacy & agent limits",
+        privacyBody:"<p><b>No personal data.</b> No name, no account, nothing is permanently stored on a server.</p><p><b>The agent CAN:</b> inform about vaccines, track the calendar, answer your questions, correct a misconception with an official source, generate a follow-up sheet.</p><p><b>The agent CANNOT:</b> make a diagnosis, prescribe treatment, decide on behalf of a healthcare professional, or replace a medical consultation.</p><p>If in doubt or worried about your child, always contact a health center.</p>" }
 };
 let lang = "fr", sessionId = null, busy = false, guidedAgeMonths = 0, guidedVisits = [];
 const $ = id => document.getElementById(id);
@@ -240,10 +297,14 @@ function applyLang(){
   $("guidedAgeTitle").textContent = t.guidedAgeTitle; $("guidedAgeSub").textContent = t.guidedAgeSub; $("ageNext").textContent = t.ageNext;
   $("checklistTitle").textContent = t.checklistTitle; $("checklistSub").textContent = t.checklistSub; $("checklistSubmit").textContent = t.checklistSubmit;
   $("resultTitle").textContent = t.resultTitle; $("resultChat").textContent = t.resultChat; $("resultRestartLabel").textContent = t.resultRestart;
+  $("chooseLibraryLabel").textContent = t.chooseLibrary; $("chooseCalendarLabel").textContent = t.chooseCalendar; $("choosePrivacyLabel").textContent = t.choosePrivacy;
+  $("libraryTitle").textContent = t.libraryTitle; $("librarySub").textContent = t.librarySub;
+  $("calendarTitle").textContent = t.calendarTitle; $("calendarSub").textContent = t.calendarSub; $("calAgeNext").textContent = t.calAgeNext;
+  $("privacyBody").innerHTML = '<h2>' + t.privacyTitle + '</h2>' + t.privacyBody;
 }
 function setBusy(b){ busy = b; $("send").disabled = b; $("input").disabled = b; $("summaryBtn").disabled = b; if(!b) $("input").focus(); }
-function populateAgeSelect(){
-  const t = UI[lang], sel = $("ageSelect"); sel.innerHTML = "";
+function populateAgeSelect(selectId){
+  const t = UI[lang], sel = $(selectId); sel.innerHTML = "";
   const opt0 = document.createElement("option"); opt0.value = "0"; opt0.textContent = t.ageOptionBirth; sel.appendChild(opt0);
   for (let m = 1; m <= 60; m++){
     const o = document.createElement("option"); o.value = String(m);
@@ -252,13 +313,60 @@ function populateAgeSelect(){
   }
 }
 
+async function loadLibrary(){
+  const t = UI[lang];
+  const r = await api("/api/library", { session_id: sessionId });
+  const body = $("libraryBody"); body.innerHTML = "";
+  if (!r.ok){ body.innerHTML = '<p class="sub">' + t.netError + '</p>'; showScreen("library"); return; }
+  r.data.vaccines.forEach(v => {
+    const card = document.createElement("details"); card.className = "vaccine-card";
+    const sideEffects = (v.side_effects || []).map(esc).join(", ");
+    card.innerHTML =
+      '<summary><span class="vname">'+esc(v.name)+'</span><span class="vdisease">'+esc(v.disease_label||"")+'</span></summary>' +
+      '<div class="vbody">' +
+        '<div class="row-line"><b>'+t.statusLabel+' :</b> '+esc(v.pev_status)+'</div>' +
+        '<div class="row-line"><b>'+t.routeLabel+' :</b> '+esc(v.route)+'</div>' +
+        '<div class="row-line"><b>'+t.sideEffectsLabel+' :</b> '+sideEffects+'</div>' +
+        '<div class="row-line"><b>'+t.whyLabel+' :</b> '+esc(v.why_it_matters)+'</div>' +
+        '<div class="row-line"><b>'+t.sourceLabel+' :</b> '+esc(v.source||"")+'</div>' +
+      '</div>';
+    body.appendChild(card);
+  });
+  showScreen("library");
+}
+
+async function loadCalendarView(){
+  const t = UI[lang];
+  const ageMonths = Number($("calAgeSelect").value);
+  const r = await api("/api/calendar", { session_id: sessionId, age_months: ageMonths });
+  const body = $("calendarBody"); body.innerHTML = "";
+  if (!r.ok){ body.innerHTML = '<p class="sub">' + t.netError + '</p>'; return; }
+  if (!r.data.visits.length){ body.innerHTML = '<p class="sub">' + t.noneDueYet + '</p>'; return; }
+  r.data.visits.forEach(visit => {
+    const group = document.createElement("div"); group.className = "visit-group";
+    const h = document.createElement("h3"); h.textContent = visit.age_label; group.appendChild(h);
+    visit.vaccines.forEach(v => {
+      const p = document.createElement("div"); p.className = "cal-item";
+      p.innerHTML = '💉 <strong>'+esc(v.name)+'</strong>' + (v.disease_label ? ' — '+esc(v.disease_label) : '');
+      group.appendChild(p);
+    });
+    visit.autres.forEach(a => {
+      const p = document.createElement("div"); p.className = "cal-item";
+      p.innerHTML = '💊 '+esc(a.label)+'<span class="tag-autre">'+t.otherIntervention+'</span>' +
+        (a.regional_note ? '<br><span class="sub" style="margin:0">'+esc(a.regional_note)+'</span>' : '');
+      group.appendChild(p);
+    });
+    body.appendChild(group);
+  });
+}
+
 async function chooseLanguage(chosen){
   lang = chosen; applyLang();
   const r = await api("/api/start", { language: chosen });
   if (!r.ok){ alert(UI[lang].netError); return; }
   sessionId = r.data.session_id; lang = r.data.language; applyLang();
   window._greeting = r.data.greeting; window._mode = r.data.mode;
-  $("restart").hidden = false;
+  $("restart").hidden = false; $("homeBtn").hidden = false;
   if (r.data.mode === "rules"){ $("mode").textContent = UI.fr.rulesNote; $("mode").hidden = false; }
   showScreen("modeSelect");
 }
@@ -267,7 +375,8 @@ function goChat(){
   addMessage("agent", window._greeting);
   showScreen("chat"); $("input").focus();
 }
-function goGuided(){ populateAgeSelect(); showScreen("guidedAge"); }
+function goGuided(){ populateAgeSelect("ageSelect"); showScreen("guidedAge"); }
+function goCalendar(){ populateAgeSelect("calAgeSelect"); $("calendarBody").innerHTML = ""; showScreen("calendarView"); }
 
 async function loadChecklist(){
   const r = await api("/api/guided/checklist", { session_id: sessionId, age_months: guidedAgeMonths });
@@ -320,11 +429,16 @@ async function sendMessage(text){
   setBusy(false);
 }
 function fullRestart(){
-  sessionId = null; $("restart").hidden = true; $("mode").hidden = true; $("messages").innerHTML = "";
+  sessionId = null; $("restart").hidden = true; $("homeBtn").hidden = true; $("mode").hidden = true; $("messages").innerHTML = "";
   showScreen("welcome");
 }
 
 document.querySelectorAll("#welcome .big-btn").forEach(b => b.addEventListener("click", () => chooseLanguage(b.dataset.lang)));
+$("homeBtn").addEventListener("click", () => showScreen("modeSelect"));
+$("chooseLibrary").addEventListener("click", loadLibrary);
+$("chooseCalendar").addEventListener("click", goCalendar);
+$("choosePrivacy").addEventListener("click", () => showScreen("privacy"));
+$("calAgeNext").addEventListener("click", loadCalendarView);
 $("chooseChat").addEventListener("click", goChat);
 $("chooseGuided").addEventListener("click", goGuided);
 $("ageNext").addEventListener("click", () => { guidedAgeMonths = Number($("ageSelect").value); loadChecklist(); });

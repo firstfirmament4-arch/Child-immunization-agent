@@ -96,6 +96,31 @@ def test_rules_mode():
     check("Web — garde-fou diagnostic actif via l'API", "diagnostic" in r["reply"].lower())
 
 
+def test_library_and_calendar_view():
+    """Nouveaux écrans (bibliothèque, calendrier exploratoire) — lecture seule, jamais via le LLM."""
+    os.environ.pop("LLM_API_KEY", None)
+    base = serve(web.make_server("127.0.0.1", 0))
+    s, st = call(base, "/api/start", {"language": "fr"})
+    sid = st["session_id"]
+
+    s, r = call(base, "/api/library", {"session_id": sid})
+    check("Bibliothèque — retourne tous les vaccins avec leurs fiches", s == 200 and len(r["vaccines"]) >= 10)
+    vpi = next((v for v in r["vaccines"] if v["name"] == "VPI"), None)
+    check("Bibliothèque — VPI a le bon libellé de maladie", vpi is not None and "poliomyélite" in vpi["disease_label"])
+
+    s, r = call(base, "/api/calendar", {"session_id": sid, "age_months": 9})
+    check("Calendrier exploratoire — plusieurs visites retournées à 9 mois", s == 200 and len(r["visits"]) >= 3)
+    visit_9m = next((v for v in r["visits"] if v["age_label"] == "9 mois"), None)
+    check("Calendrier exploratoire — vaccins ET autres interventions distingués à 9 mois",
+          visit_9m is not None and len(visit_9m["vaccines"]) > 0 and len(visit_9m["autres"]) > 0)
+    autres_names = [a["name"] for a in visit_9m["autres"]] if visit_9m else []
+    check("Calendrier exploratoire — jamais de vaccin mélangé dans 'autres'",
+          "Mosquirix" not in autres_names and "VPI" not in autres_names)
+
+    s, r = call(base, "/api/calendar", {"session_id": sid, "age_months": -5})
+    check("Calendrier exploratoire — âge négatif plafonné sans planter", s == 200)
+
+
 def test_guided_mode():
     """Mode 'cocher les vaccins' — ne doit jamais dépendre du LLM."""
     os.environ.pop("LLM_API_KEY", None)
@@ -169,6 +194,7 @@ def test_llm_fallback_to_rules():
 if __name__ == "__main__":
     test_rules_mode()
     test_llm_mode()
+    test_library_and_calendar_view()
     test_guided_mode()
     test_llm_fallback_to_rules()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")
