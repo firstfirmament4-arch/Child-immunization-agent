@@ -96,6 +96,18 @@
   .vaccine-card .vbody b { color:var(--muted); font-weight:600; }
   .tag-autre { display:inline-block; font-size:.7rem; padding:.1rem .5rem; border-radius:99px; background:var(--warn); color:var(--muted); margin-left:.4rem; }
   .cal-item { padding:.3rem 0; }
+  .sheet-child { border:1px solid var(--border); border-radius:1rem; background:var(--card); box-shadow:var(--shadow);
+                 margin-bottom:1rem; overflow:hidden; text-align:left; }
+  .sheet-child h3 { margin:0; padding:.7rem .9rem; background:linear-gradient(135deg, var(--brand), var(--brand2)); color:#fff; font-size:.95rem; }
+  .sheet-section { padding:.7rem .9rem; border-top:1px solid var(--border); }
+  .sheet-section .label { font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; margin-bottom:.4rem; }
+  .pill-row { display:flex; flex-wrap:wrap; gap:.4rem; }
+  .pill { display:inline-flex; align-items:center; gap:.3rem; font-size:.82rem; padding:.3rem .65rem; border-radius:99px; }
+  .pill-done { background:#e4f6ee; color:#176448; }
+  .pill-missing { background:var(--warn); color:#7a5600; }
+  @media (prefers-color-scheme: dark) { .pill-done { background:#15362a; color:#6fe0b4; } .pill-missing { background:#3a2f12; color:#ffcf6b; } }
+  .sheet-empty { color:var(--muted); font-size:.88rem; }
+  .sheet-disclaimer { font-size:.78rem; color:var(--muted); text-align:center; margin-top:.8rem; }
 
 </style>
 </head>
@@ -193,7 +205,7 @@
 
 <dialog id="summaryDialog">
   <strong id="summaryTitle"></strong>
-  <pre id="summaryText"></pre>
+  <div id="summaryText"></div>
   <div class="row"><button class="ghost" id="copyBtn"></button><button class="ghost" id="closeBtn"></button></div>
 </dialog>
 
@@ -335,6 +347,48 @@ async function loadLibrary(){
   showScreen("library");
 }
 
+function renderSheet(data){
+  const t = UI[lang];
+  const wrap = document.createElement("div");
+  (data.children || []).forEach(child => {
+    const card = document.createElement("div"); card.className = "sheet-child";
+    const h = document.createElement("h3");
+    h.textContent = (data.children.length > 1 ? (lang === "en" ? "Child " : "Enfant ") + child.number + " — " : "") +
+      (child.age_months != null ? child.age_months + " " + (lang === "en" ? "months" : "mois") : data.age_unknown_label);
+    card.appendChild(h);
+
+    const recSection = document.createElement("div"); recSection.className = "sheet-section";
+    recSection.innerHTML = '<div class="label">'+ (lang === "en" ? "Received" : "Reçus") +'</div>';
+    const recRow = document.createElement("div"); recRow.className = "pill-row";
+    if (!child.received.length){ recRow.innerHTML = '<span class="sheet-empty">'+data.none_label+'</span>'; }
+    child.received.forEach(v => {
+      const p = document.createElement("span"); p.className = "pill pill-done";
+      p.textContent = "✓ " + v.name + (v.count > 1 ? " (x"+v.count+")" : "");
+      recRow.appendChild(p);
+    });
+    recSection.appendChild(recRow); card.appendChild(recSection);
+
+    const missSection = document.createElement("div"); missSection.className = "sheet-section";
+    missSection.innerHTML = '<div class="label">'+ (lang === "en" ? "To check / possibly overdue" : "À vérifier / possiblement en retard") +'</div>';
+    if (!child.missing.length){
+      missSection.innerHTML += '<span class="sheet-empty">'+ (lang === "en" ? "Nothing overdue." : "Rien en retard.") +'</span>';
+    } else {
+      const missRow = document.createElement("div"); missRow.className = "pill-row";
+      child.missing.forEach(m => {
+        const p = document.createElement("span"); p.className = "pill pill-missing";
+        p.textContent = "⚠ " + m.vaccine + (m.disease_label ? " — "+m.disease_label : "") + " (" + m.due_since + ")";
+        missRow.appendChild(p);
+      });
+      missSection.appendChild(missRow);
+    }
+    card.appendChild(missSection);
+    wrap.appendChild(card);
+  });
+  const disc = document.createElement("p"); disc.className = "sheet-disclaimer"; disc.textContent = data.disclaimer;
+  wrap.appendChild(disc);
+  return wrap;
+}
+
 async function loadCalendarView(){
   const t = UI[lang];
   const ageMonths = Number($("calAgeSelect").value);
@@ -409,7 +463,8 @@ async function submitChecklist(){
   });
   const r = await api("/api/guided/submit", { session_id: sessionId, age_months: guidedAgeMonths, checked });
   if (!r.ok){ alert(UI[lang].netError); return; }
-  $("guidedResultText").textContent = r.data.summary;
+  lastSummaryText = r.data.summary;
+  const box = $("guidedResultText"); box.innerHTML = ""; box.appendChild(renderSheet(r.data.data));
   showScreen("guidedResult");
 }
 async function sendMessage(text){
@@ -455,14 +510,17 @@ $("bar").addEventListener("submit", e => {
   e.preventDefault(); const text = $("input").value.trim();
   if (!text || busy) return; $("input").value = ""; sendMessage(text);
 });
+let lastSummaryText = "";
 $("summaryBtn").addEventListener("click", async () => {
   const r = await api("/api/summary", { session_id: sessionId });
-  $("summaryText").textContent = r.ok ? r.data.summary : (r.data.error || UI[lang].netError);
+  const box = $("summaryText"); box.innerHTML = "";
+  if (r.ok){ lastSummaryText = r.data.summary; box.appendChild(renderSheet(r.data.data)); }
+  else { lastSummaryText = r.data.error || UI[lang].netError; box.textContent = lastSummaryText; }
   $("summaryDialog").showModal();
 });
 $("closeBtn").addEventListener("click", () => $("summaryDialog").close());
 $("copyBtn").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText($("summaryText").textContent); $("copyBtn").textContent = UI[lang].copied;
+  try { await navigator.clipboard.writeText(lastSummaryText); $("copyBtn").textContent = UI[lang].copied;
         setTimeout(() => $("copyBtn").textContent = UI[lang].copy, 1500); } catch(e) {}
 });
 applyLang();

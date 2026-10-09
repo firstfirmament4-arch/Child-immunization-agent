@@ -132,6 +132,42 @@ def _format_child_lines(age, received: dict, missing: list, t: dict, show) -> li
     return lines
 
 
+def generate_followup_data(session: dict, missing: list[dict], language: str = "fr") -> dict:
+    """
+    Version structurée (pas du texte) de la fiche de suivi, pour un rendu visuel côté interface.
+    N'affecte en rien generate_followup_summary (utilisée par le LLM et le CLI), qui reste du texte.
+    """
+    lang = language if language in SUMMARY_TEXT else "fr"
+    t = SUMMARY_TEXT[lang]
+
+    def show(name: str) -> str:
+        return VACCINE_DISPLAY_EN.get(name, name) if lang == "en" else name
+
+    def child_dict(number, age, received, child_missing):
+        return {
+            "number": number,
+            "age_months": age,
+            "received": [{"name": show(n), "count": c} for n, c in received.items()],
+            "missing": [
+                {
+                    "vaccine": show(m["vaccine"]),
+                    "due_since": m.get("due_since_en", m["due_since"]) if lang == "en" else m["due_since"],
+                    "disease_label": m.get("disease_label_en" if lang == "en" else "disease_label") or "",
+                }
+                for m in (child_missing or [])
+            ],
+        }
+
+    other = session.get("other_children") or []
+    if not other:
+        children = [child_dict(1, session.get("age_months"), session.get("vaccines_received", {}), missing)]
+    else:
+        all_children = other + [{"age_months": session.get("age_months"), "vaccines_received": session.get("vaccines_received", {}), "missing": missing}]
+        children = [child_dict(i, c.get("age_months"), c.get("vaccines_received", {}), c.get("missing")) for i, c in enumerate(all_children, start=1)]
+
+    return {"children": children, "disclaimer": t["disclaimer"], "age_unknown_label": t["age_unknown"], "none_label": t["none"]}
+
+
 def generate_followup_summary(session: dict, missing: list[dict], language: str = "fr") -> str:
     """
     Fiche de suivi pour le parent (anonyme, pas de PII), en français ou en anglais.

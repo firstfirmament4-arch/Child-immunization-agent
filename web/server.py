@@ -35,7 +35,7 @@ from tools.knowledge_tools import (  # noqa: E402
     search_pev_calendar, explain_vaccine_info, find_missing_vaccines,
     describe_other_intervention, _load as _load_knowledge,
 )
-from tools.session_tools import set_age, add_vaccine, generate_followup_summary  # noqa: E402
+from tools.session_tools import set_age, add_vaccine, generate_followup_summary, generate_followup_data  # noqa: E402
 
 INDEX_HTML = (Path(__file__).parent / "index.html").read_bytes()
 
@@ -133,11 +133,16 @@ def chat(entry: dict, message: str) -> str:
         return orchestrator.handle_message(entry["session"], message)
 
 
-def summary(entry: dict) -> str:
+def summary(entry: dict) -> dict:
     with entry["lock"]:
+        session = entry["session"]
         if entry["mode"] == "llm":
-            return AgentToolbox(entry["session"]).generate_summary()["summary"]
-        return orchestrator.get_summary(entry["session"])
+            text = AgentToolbox(session).generate_summary()["summary"]
+        else:
+            text = orchestrator.get_summary(session)
+        missing = session.get("last_missing") or []
+        data = generate_followup_data(session, missing, entry["language"])
+        return {"summary": text, "data": data}
 
 
 def guided_checklist(age_months: float, language: str) -> list:
@@ -217,7 +222,8 @@ def guided_submit(entry: dict, age_months: float, checked: list) -> dict:
         missing = find_missing_vaccines(age_months, session["vaccines_received"])
         session["last_missing"] = missing
         summary_text = generate_followup_summary(session, missing, entry["language"])
-        return {"summary": summary_text, "missing_count": len(missing)}
+        data = generate_followup_data(session, missing, entry["language"])
+        return {"summary": summary_text, "data": data, "missing_count": len(missing)}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -311,7 +317,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(200, guided_submit(entry, age_months, checked))
 
         if self.path == "/api/summary":
-            return self._json(200, {"summary": summary(entry)})
+            return self._json(200, summary(entry))
 
         self._json(404, {"error": "not found"})
 

@@ -40,6 +40,15 @@ Tous les anciens tests sont passés sans modification grâce à une extension ad
 `vaccines` n'a pas changé, on a juste ajouté un champ `autres` à côté) — zéro régression malgré
 une réécriture substantielle des données.
 
+## Fiche de suivi modernisée (nouveau)
+
+La fiche de suivi (dialogue "Fiche de suivi" du chat, et écran de résultat du mode guidé) n'est
+plus un bloc de texte brut : chaque enfant devient une carte avec un en-tête dégradé, les vaccins
+reçus en pastilles vertes (✓), les vaccins manquants en pastilles orange (⚠, avec la maladie visée
+et depuis quand). Le bouton "Copier" copie toujours la version texte brute (idéale pour coller
+dans WhatsApp/SMS), générée séparément de l'affichage visuel — les deux ne sont jamais désynchronisés
+puisqu'elles viennent de la même fonction serveur (`generate_followup_data` / `generate_followup_summary`).
+
 ## Nouveau menu d'accueil : fini l'impression "chatbot" (3 octobre 2026)
 
 Retour terrain : la chef médecin des vaccinations trouvait l'app "trop chatbot". Diagnostic revu
