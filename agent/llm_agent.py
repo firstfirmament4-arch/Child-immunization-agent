@@ -85,6 +85,14 @@ disease_label (ou disease_label_en) déjà fourni par l'outil pour dire contre q
 N'invente JAMAIS cette information toi-même. Exemple à ne jamais reproduire : le VPI n'est PAS un \
 vaccin contre la coqueluche, c'est le vaccin injectable contre la poliomyélite — si tu as un doute \
 sur un vaccin, appelle get_vaccine_info au lieu de deviner.
+- Quand tu identifies des vaccins manquants (get_missing_vaccines), propose spontanément d'aider \
+à trouver où se faire vacciner (find_health_facility) — demande la position GPS ou le nom du \
+quartier si tu ne les as pas encore.
+- find_health_facility ne couvre QUE le secteur Biyem-Assi (Yaoundé) pour l'instant — dis-le \
+clairement si le parent semble être ailleurs. Les structures retournées sont réelles et \
+enregistrées par le ministère, mais cela NE GARANTIT PAS que le vaccin recherché y est disponible \
+aujourd'hui : dis toujours au parent de confirmer sur place ou par téléphone avant de se déplacer. \
+N'invente JAMAIS une structure, une adresse ou une distance qui ne vient pas de l'outil.
 - Reste strictement anonyme : ne demande jamais de nom. Si le parent donne un prénom ou un nom, ne le répète JAMAIS et ne l'utilise jamais dans tes réponses ; dis simplement \"votre enfant\" (\"your child\" en anglais), et précise gentiment qu'aucun nom n'est nécessaire.
 - Varie tes formulations d'un message à l'autre : ne répète pas toujours la même structure ou les \
 mêmes mots d'ouverture (évite de commencer systématiquement par \"Merci\"). Réagis d'abord à ce que \
@@ -187,6 +195,7 @@ TRACE_LABELS = {
         "get_vaccine_info": lambda args, result: f"🔍 Fiche officielle consultée : {args.get('vaccine_name', '')}",
         "get_hors_pev_info": lambda args, result: f"🔍 Statut PEV / hors-PEV vérifié : {args.get('vaccine_name', '')}",
         "get_other_interventions": lambda args, result: f"🔍 Autres interventions du PEV vérifiées (vitamine A, déparasitage...) — {len(result.get('interventions', []))} trouvée(s)",
+        "find_health_facility": lambda args, result: f"📍 Registre officiel des structures de santé consulté — {len(result.get('facilities', []))} trouvée(s)",
         "check_misconception": lambda args, result: "🔍 Affirmation vérifiée auprès de la base de connaissances officielle" if result.get("found") else None,
         "generate_summary": lambda args, result: "📋 Fiche de suivi générée à partir des données enregistrées",
         "start_new_child": lambda args, result: "🧒 Nouvel enfant pris en compte, profil précédent conservé séparément",
@@ -197,6 +206,7 @@ TRACE_LABELS = {
         "get_vaccine_info": lambda args, result: f"🔍 Official vaccine sheet checked: {args.get('vaccine_name', '')}",
         "get_hors_pev_info": lambda args, result: f"🔍 EPI / non-EPI status checked: {args.get('vaccine_name', '')}",
         "get_other_interventions": lambda args, result: f"🔍 Other EPI interventions checked (vitamin A, deworming...) — {len(result.get('interventions', []))} found",
+        "find_health_facility": lambda args, result: f"📍 Official health facility registry checked — {len(result.get('facilities', []))} found",
         "check_misconception": lambda args, result: "🔍 Claim checked against the official knowledge base" if result.get("found") else None,
         "generate_summary": lambda args, result: "📋 Follow-up sheet generated from recorded data",
         "start_new_child": lambda args, result: "🧒 New child recorded, previous profile kept separate",

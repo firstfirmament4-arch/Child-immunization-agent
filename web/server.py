@@ -34,6 +34,7 @@ from agent.toolbox import AgentToolbox  # noqa: E402
 from tools.knowledge_tools import (  # noqa: E402
     search_pev_calendar, explain_vaccine_info, find_missing_vaccines,
     describe_other_intervention, _load as _load_knowledge,
+    find_nearby_facilities, find_facilities_by_area, list_health_areas,
 )
 from tools.session_tools import set_age, add_vaccine, generate_followup_summary, generate_followup_data  # noqa: E402
 
@@ -73,6 +74,18 @@ def llm_mode_enabled() -> bool:
     return bool(os.environ.get("LLM_API_KEY"))
 
 
+def chat_enabled() -> bool:
+    """
+    Permet de désactiver RÉELLEMENT le chat libre pour certains déploiements (ex: la version
+    montrée au ministère, qui ne veut que les parcours structurés : bibliothèque, calendrier,
+    mode guidé). Ce n'est pas juste masqué côté interface : /api/chat refuse aussi la requête
+    côté serveur — on ne cache pas une fonctionnalité qui resterait techniquement accessible,
+    on la retire vraiment pour ce déploiement.
+    Variable d'environnement : CHAT_ENABLED=false (ou 0) pour désactiver. Activé par défaut.
+    """
+    return os.environ.get("CHAT_ENABLED", "true").strip().lower() not in ("false", "0", "no")
+
+
 def _cleanup_sessions():
     now = time.time()
     for sid in [s for s, e in _sessions.items() if now - e["last"] > SESSION_TTL_SECONDS]:
@@ -99,7 +112,7 @@ def start_session(language: str) -> dict:
         _cleanup_sessions()
         _sessions[sid] = {"session": session, "mode": mode, "language": language,
                           "last": time.time(), "lock": threading.Lock()}
-    return {"session_id": sid, "mode": mode, "language": language, "greeting": greeting}
+    return {"session_id": sid, "mode": mode, "language": language, "greeting": greeting, "chat_enabled": chat_enabled()}
 
 
 def get_entry(sid):
@@ -210,6 +223,18 @@ def calendar_overview(age_months: float, language: str) -> list:
     return out
 
 
+def health_areas() -> list:
+    return list_health_areas()
+
+
+def nearby_facilities(lat: float, lon: float) -> dict:
+    return find_nearby_facilities(lat, lon)
+
+
+def facilities_in_area(area_name: str) -> dict:
+    return find_facilities_by_area(area_name)
+
+
 def guided_submit(entry: dict, age_months: float, checked: list) -> dict:
     """Enregistre l'âge + les doses cochées (une par visite cochée) et calcule ce qui manque."""
     with entry["lock"]:
@@ -273,6 +298,8 @@ class Handler(BaseHTTPRequestHandler):
         lang = entry["language"]
 
         if self.path == "/api/chat":
+            if not chat_enabled():
+                return self._json(403, {"error": "chat disabled on this deployment"})
             message = str(data.get("message", "")).strip()
             if not message:
                 return self._json(400, {"error": "empty message"})
@@ -296,6 +323,28 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(400, {"error": "invalid age_months"})
             age_months = max(0.0, min(age_months, 120.0))
             return self._json(200, {"visits": calendar_overview(age_months, entry["language"])})
+
+        if self.path == "/api/facilities/areas":
+            return self._json(200, {"areas": health_areas()})
+
+        if self.path == "/api/facilities/nearby":
+            try:
+                lat = float(data.get("lat"))
+                lon = float(data.get("lon"))
+            except (TypeError, ValueError):
+                return self._json(400, {"error": "invalid coordinates"})
+            if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+                return self._json(400, {"error": "coordinates out of range"})
+            return self._json(200, nearby_facilities(lat, lon))
+
+        if self.path == "/api/facilities/area":
+            area = str(data.get("area", "")).strip()
+            if not area:
+                return self._json(400, {"error": "missing area"})
+            result = facilities_in_area(area)
+            if not result["facilities"]:
+                result["known_areas"] = health_areas()
+            return self._json(200, result)
 
         if self.path == "/api/guided/checklist":
             try:

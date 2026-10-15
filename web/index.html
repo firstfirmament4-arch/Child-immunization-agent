@@ -108,6 +108,13 @@
   @media (prefers-color-scheme: dark) { .pill-done { background:#15362a; color:#6fe0b4; } .pill-missing { background:#3a2f12; color:#ffcf6b; } }
   .sheet-empty { color:var(--muted); font-size:.88rem; }
   .sheet-disclaimer { font-size:.78rem; color:var(--muted); text-align:center; margin-top:.8rem; }
+  .facility-card { text-align:left; border:1px solid var(--border); border-radius:.8rem; background:var(--card);
+                    padding:.75rem .9rem; margin-bottom:.6rem; box-shadow:var(--shadow); }
+  .facility-card .fname { font-weight:700; }
+  .facility-card .farea { font-size:.82rem; color:var(--muted); }
+  .facility-card .fdist { float:right; font-size:.8rem; background:var(--warn); color:var(--muted); padding:.15rem .5rem; border-radius:99px; }
+  .caveat-box { font-size:.82rem; color:var(--muted); background:var(--bg); border:1px solid var(--border);
+                border-radius:.7rem; padding:.7rem .9rem; margin:.8rem 0; text-align:left; }
 
 </style>
 </head>
@@ -138,7 +145,21 @@
       <button class="big-btn" id="chooseCalendar"><span class="ic">📅</span> <span id="chooseCalendarLabel"></span></button>
       <button class="big-btn" id="chooseChat"><span class="ic">💬</span> <span id="chooseChatLabel"></span></button>
       <button class="big-btn" id="chooseGuided"><span class="ic">☑️</span> <span id="chooseGuidedLabel"></span></button>
+      <button class="big-btn" id="chooseFacility"><span class="ic">📍</span> <span id="chooseFacilityLabel"></span></button>
       <button class="big-btn" id="choosePrivacy"><span class="ic">🔒</span> <span id="choosePrivacyLabel"></span></button>
+    </div>
+  </section>
+
+  <section id="facility" class="screen">
+    <div class="centered">
+      <h2 id="facilityTitle"></h2>
+      <p class="sub" id="facilitySub"></p>
+      <div class="caveat-box" id="facilityCaveat"></div>
+      <button class="primary" id="facilityUseGPS"></button>
+      <p class="sub" id="facilityOrLabel" style="margin:.8rem 0 .3rem"></p>
+      <select id="areaSelect"></select>
+      <button class="primary" id="facilityUseArea"></button>
+      <div id="facilityBody" style="margin-top:1rem"></div>
     </div>
   </section>
 
@@ -232,6 +253,12 @@ const UI = {
         routeLabel:"Voie d'administration", sideEffectsLabel:"Effets secondaires possibles", whyLabel:"Pourquoi c'est important",
         statusLabel:"Statut", sourceLabel:"Source", otherIntervention:"autre intervention (pas un vaccin)",
         privacyTitle:"Confidentialité & limites de l'agent",
+        chooseFacility:"Trouver une structure de santé",
+        facilityTitle:"Trouver une structure de santé", facilitySub:"Secteur Biyem-Assi (Yaoundé) uniquement, pour l'instant.",
+        facilityCaveat:"⚠️ Ces structures sont officiellement enregistrées, mais cela ne garantit pas qu'un vaccin précis y est disponible aujourd'hui. Confirmez toujours par téléphone ou sur place avant de vous déplacer.",
+        facilityUseGPS:"📍 Utiliser ma position actuelle", facilityOrLabel:"— ou choisissez votre quartier —",
+        facilityUseArea:"Afficher", facilityGpsDenied:"Position non disponible ou refusée. Choisissez votre quartier ci-dessous.",
+        facilityGpsAsking:"Localisation en cours…", facilityNoResults:"Aucune structure trouvée pour ce quartier.",
         privacyBody:"<p><b>Aucune donnée personnelle.</b> Pas de nom, pas de compte, rien n'est enregistré sur un serveur de façon permanente.</p><p><b>L'agent PEUT :</b> informer sur les vaccins, suivre le calendrier, répondre à vos questions, corriger une idée reçue avec une source officielle, générer une fiche de suivi.</p><p><b>L'agent NE PEUT PAS :</b> poser un diagnostic, prescrire un traitement, décider à la place d'un professionnel de santé, ou remplacer une consultation médicale.</p><p>En cas de doute ou d'inquiétude concernant votre enfant, adressez-vous toujours à un centre de santé.</p>" },
   en: { title:"My child's vaccines", placeholder:"Type your message…", send:"Send", summary:"📋 Follow-up sheet",
         restart:"New conversation", copy:"Copy", copied:"Copied ✓", close:"Close", typing:"…",
@@ -254,6 +281,12 @@ const UI = {
         routeLabel:"Route of administration", sideEffectsLabel:"Possible side effects", whyLabel:"Why it matters",
         statusLabel:"Status", sourceLabel:"Source", otherIntervention:"other intervention (not a vaccine)",
         privacyTitle:"Privacy & agent limits",
+        chooseFacility:"Find a health facility",
+        facilityTitle:"Find a health facility", facilitySub:"Biyem-Assi sector (Yaoundé) only, for now.",
+        facilityCaveat:"⚠️ These facilities are officially registered, but that doesn't guarantee a specific vaccine is available there today. Always confirm by phone or in person before travelling.",
+        facilityUseGPS:"📍 Use my current location", facilityOrLabel:"— or pick your neighborhood —",
+        facilityUseArea:"Show", facilityGpsDenied:"Location unavailable or denied. Pick your neighborhood below.",
+        facilityGpsAsking:"Locating…", facilityNoResults:"No facility found for this neighborhood.",
         privacyBody:"<p><b>No personal data.</b> No name, no account, nothing is permanently stored on a server.</p><p><b>The agent CAN:</b> inform about vaccines, track the calendar, answer your questions, correct a misconception with an official source, generate a follow-up sheet.</p><p><b>The agent CANNOT:</b> make a diagnosis, prescribe treatment, decide on behalf of a healthcare professional, or replace a medical consultation.</p><p>If in doubt or worried about your child, always contact a health center.</p>" }
 };
 let lang = "fr", sessionId = null, busy = false, guidedAgeMonths = 0, guidedVisits = [];
@@ -313,6 +346,10 @@ function applyLang(){
   $("libraryTitle").textContent = t.libraryTitle; $("librarySub").textContent = t.librarySub;
   $("calendarTitle").textContent = t.calendarTitle; $("calendarSub").textContent = t.calendarSub; $("calAgeNext").textContent = t.calAgeNext;
   $("privacyBody").innerHTML = '<h2>' + t.privacyTitle + '</h2>' + t.privacyBody;
+  $("chooseFacilityLabel").textContent = t.chooseFacility;
+  $("facilityTitle").textContent = t.facilityTitle; $("facilitySub").textContent = t.facilitySub;
+  $("facilityCaveat").textContent = t.facilityCaveat; $("facilityUseGPS").textContent = t.facilityUseGPS;
+  $("facilityOrLabel").textContent = t.facilityOrLabel; $("facilityUseArea").textContent = t.facilityUseArea;
 }
 function setBusy(b){ busy = b; $("send").disabled = b; $("input").disabled = b; $("summaryBtn").disabled = b; if(!b) $("input").focus(); }
 function populateAgeSelect(selectId){
@@ -346,6 +383,46 @@ async function loadLibrary(){
   });
   showScreen("library");
 }
+
+function renderFacilities(list){
+  const t = UI[lang];
+  const body = $("facilityBody"); body.innerHTML = "";
+  if (!list.length){ body.innerHTML = '<p class="sub">' + t.facilityNoResults + '</p>'; return; }
+  list.forEach(f => {
+    const card = document.createElement("div"); card.className = "facility-card";
+    const dist = (f.distance_km != null) ? '<span class="fdist">'+f.distance_km+' km</span>' : "";
+    card.innerHTML = dist + '<div class="fname">'+esc(f.name)+'</div><div class="farea">'+esc(f.area)+'</div>';
+    body.appendChild(card);
+  });
+}
+
+async function goFacility(){
+  const t = UI[lang];
+  const sel = $("areaSelect"); sel.innerHTML = "";
+  const r = await api("/api/facilities/areas", { session_id: sessionId });
+  if (r.ok) r.data.areas.forEach(a => { const o = document.createElement("option"); o.value = a; o.textContent = a; sel.appendChild(o); });
+  $("facilityBody").innerHTML = "";
+  showScreen("facility");
+}
+
+$("facilityUseGPS").addEventListener("click", () => {
+  const t = UI[lang];
+  $("facilityBody").innerHTML = '<p class="sub">' + t.facilityGpsAsking + '</p>';
+  if (!navigator.geolocation){ $("facilityBody").innerHTML = '<p class="sub">' + t.facilityGpsDenied + '</p>'; return; }
+  navigator.geolocation.getCurrentPosition(
+    async (pos) => {
+      const r = await api("/api/facilities/nearby", { session_id: sessionId, lat: pos.coords.latitude, lon: pos.coords.longitude });
+      if (r.ok) renderFacilities(r.data.facilities); else $("facilityBody").innerHTML = '<p class="sub">' + UI[lang].netError + '</p>';
+    },
+    () => { $("facilityBody").innerHTML = '<p class="sub">' + t.facilityGpsDenied + '</p>'; },
+    { timeout: 8000 }
+  );
+});
+$("facilityUseArea").addEventListener("click", async () => {
+  const r = await api("/api/facilities/area", { session_id: sessionId, area: $("areaSelect").value });
+  if (r.ok) renderFacilities(r.data.facilities); else $("facilityBody").innerHTML = '<p class="sub">' + UI[lang].netError + '</p>';
+});
+$("chooseFacility").addEventListener("click", goFacility);
 
 function renderSheet(data){
   const t = UI[lang];
@@ -422,6 +499,8 @@ async function chooseLanguage(chosen){
   window._greeting = r.data.greeting; window._mode = r.data.mode;
   $("restart").hidden = false; $("homeBtn").hidden = false;
   if (r.data.mode === "rules"){ $("mode").textContent = UI.fr.rulesNote; $("mode").hidden = false; }
+  window._chatEnabled = (r.data.chat_enabled !== false);
+  $("chooseChat").hidden = !window._chatEnabled;
   showScreen("modeSelect");
 }
 function goChat(){
@@ -465,6 +544,7 @@ async function submitChecklist(){
   if (!r.ok){ alert(UI[lang].netError); return; }
   lastSummaryText = r.data.summary;
   const box = $("guidedResultText"); box.innerHTML = ""; box.appendChild(renderSheet(r.data.data));
+  $("resultChat").hidden = !window._chatEnabled;
   showScreen("guidedResult");
 }
 async function sendMessage(text){

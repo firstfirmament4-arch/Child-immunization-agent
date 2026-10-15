@@ -1,0 +1,1783 @@
+{
+  "district": "Biyem-Assi",
+  "source": "MINSANTE — Health Facility registry (fourni le 11 octobre 2026)",
+  "last_verified": "2026-10-11",
+  "facilities": [
+    {
+      "id": 1050096,
+      "name": "CS Selupa",
+      "area": "AS Nkolbikok",
+      "district": "District Biyem Assi",
+      "lat": 3.8711,
+      "lon": 11.4974
+    },
+    {
+      "id": 1050098,
+      "name": "CS Acovura",
+      "area": "AS Nkolbikok",
+      "district": "District Biyem Assi",
+      "lat": 3.868403253145516,
+      "lon": 11.49221252650023
+    },
+    {
+      "id": 1050099,
+      "name": "CS Djomo",
+      "area": "AS Nkolbikok",
+      "district": "District Biyem Assi",
+      "lat": 3.870141450315714,
+      "lon": 11.48960047401488
+    },
+    {
+      "id": 1050102,
+      "name": "CS Cites de Maitres",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.841824449999999,
+      "lon": 11.46930758333333
+    },
+    {
+      "id": 1050103,
+      "name": "Cabinet de Soins Feel Better (cnls)",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8394,
+      "lon": 11.4577
+    },
+    {
+      "id": 1050108,
+      "name": "CS la Divine",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.83,
+      "lon": 11.4727
+    },
+    {
+      "id": 1050109,
+      "name": "CS Immunité Divine",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.839783333333333,
+      "lon": 11.466815
+    },
+    {
+      "id": 1050110,
+      "name": "CS Nolfowop Kemest",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8379,
+      "lon": 11.4603
+    },
+    {
+      "id": 1050113,
+      "name": "Cabinet de Soins l’humanite",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8394,
+      "lon": 11.4626
+    },
+    {
+      "id": 1050114,
+      "name": "Centre Medico-Social Marc Vivien Foe (cnls)",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8405,
+      "lon": 11.4725
+    },
+    {
+      "id": 1050116,
+      "name": "CS Fleming",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.841906416666667,
+      "lon": 11.47130528333333
+    },
+    {
+      "id": 1050119,
+      "name": "CS Polyvalent Vision Saine",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.842510516666667,
+      "lon": 11.47131658333333
+    },
+    {
+      "id": 1050120,
+      "name": "CS El Rapha",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8453529,
+      "lon": 11.46244935
+    },
+    {
+      "id": 1050124,
+      "name": "CS Ngomeda",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8406,
+      "lon": 11.4586
+    },
+    {
+      "id": 1050126,
+      "name": "CM les Cadres",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8387,
+      "lon": 11.4591
+    },
+    {
+      "id": 1050128,
+      "name": "CS Onyx Donavan",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.83785,
+      "lon": 11.47203166666666
+    },
+    {
+      "id": 1050131,
+      "name": "CS le Sourire",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.84605575,
+      "lon": 11.4691008
+    },
+    {
+      "id": 1050132,
+      "name": "CM Marie Elisabeth",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.846555,
+      "lon": 11.46562166666667
+    },
+    {
+      "id": 1050134,
+      "name": "CS Good Shepherd",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 1050138,
+      "name": "CM de la Base Militaire",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.824948333333333,
+      "lon": 11.46707
+    },
+    {
+      "id": 1050140,
+      "name": "Hadassah Medical Center",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.800323333333333,
+      "lon": 11.48018333333333
+    },
+    {
+      "id": 1050141,
+      "name": "CS Challenge",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.828076666666667,
+      "lon": 11.471665
+    },
+    {
+      "id": 1050142,
+      "name": "CS la Solidarite",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.812583333333333,
+      "lon": 11.47593666666667
+    },
+    {
+      "id": 1050143,
+      "name": "Cabinet Medical Planete de la Grace Divine",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.825363333333333,
+      "lon": 11.46764166666667
+    },
+    {
+      "id": 1050144,
+      "name": "CSI Simbock",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8124,
+      "lon": 11.473
+    },
+    {
+      "id": 1050145,
+      "name": "Cs Galilee",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.827516666666667,
+      "lon": 11.47083333333333
+    },
+    {
+      "id": 1050147,
+      "name": "CS Gogwin",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.806535,
+      "lon": 11.484795
+    },
+    {
+      "id": 1050149,
+      "name": "Cabinet de Soins Humanite Divine",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.809133333333333,
+      "lon": 11.478485
+    },
+    {
+      "id": 1050150,
+      "name": "CS Lord Favour",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.827193333333333,
+      "lon": 11.469215
+    },
+    {
+      "id": 1050151,
+      "name": "Centre de Sante Tanman",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8053,
+      "lon": 11.4723
+    },
+    {
+      "id": 1050153,
+      "name": "Cabinet de Soins Notre Dame du Rosaire",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8083,
+      "lon": 11.4788
+    },
+    {
+      "id": 1050158,
+      "name": "Centre de Sante J Prosso",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8224,
+      "lon": 11.4718
+    },
+    {
+      "id": 1050160,
+      "name": "Cs Jardin de la guerison",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.82094,
+      "lon": 11.47476833333334
+    },
+    {
+      "id": 1050164,
+      "name": "CS Confiance Plus",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.82066,
+      "lon": 11.46721
+    },
+    {
+      "id": 1050165,
+      "name": "Cabinet Saint Antoine Plus",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8306,
+      "lon": 11.4714
+    },
+    {
+      "id": 1050166,
+      "name": "Cabinet de Soins Reconfort Plus",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8211,
+      "lon": 11.4732
+    },
+    {
+      "id": 1050167,
+      "name": "CS Main Douce Plus",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.825353333333334,
+      "lon": 11.47146666666667
+    },
+    {
+      "id": 1050168,
+      "name": "Cabinet de Soins les Merveilles",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.825,
+      "lon": 11.4694
+    },
+    {
+      "id": 1050169,
+      "name": "CS Nina Ngonmeda",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.815848333333333,
+      "lon": 11.47562666666667
+    },
+    {
+      "id": 1050171,
+      "name": "CS Main douce",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.858843333333333,
+      "lon": 11.48483
+    },
+    {
+      "id": 1050174,
+      "name": "CMA Mvog Betsi",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.8633,
+      "lon": 11.4869
+    },
+    {
+      "id": 1050176,
+      "name": "CS Shalom",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.855296666666666,
+      "lon": 11.48546
+    },
+    {
+      "id": 1050177,
+      "name": "Cs la Revolution",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.863243102096021,
+      "lon": 11.48532268591225
+    },
+    {
+      "id": 1050178,
+      "name": "Cs la Solution",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.861203407868743,
+      "lon": 11.48492923937738
+    },
+    {
+      "id": 1050179,
+      "name": "Cs Fountain of Life",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.86347,
+      "lon": 11.479105
+    },
+    {
+      "id": 1050180,
+      "name": "Cabinet de Soins Virginia Anderson",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.854875,
+      "lon": 11.478335
+    },
+    {
+      "id": 1050182,
+      "name": "CS Berger",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.856641666666667,
+      "lon": 11.48429
+    },
+    {
+      "id": 1050183,
+      "name": "Centre Hospitalier Dominicain St Martin De Porres",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.860683333333334,
+      "lon": 11.47669166666667
+    },
+    {
+      "id": 1050184,
+      "name": "Etoug Ebe Baptist Hospital",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.849806282669306,
+      "lon": 11.48302721790969
+    },
+    {
+      "id": 1050185,
+      "name": "Cabinet de Soins la Charite",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8585,
+      "lon": 11.4847
+    },
+    {
+      "id": 1050187,
+      "name": "Centre de Sante la Confiance",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.8607,
+      "lon": 11.4762
+    },
+    {
+      "id": 1050188,
+      "name": "EMMANUELLE",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.848954136483371,
+      "lon": 11.48261482827365
+    },
+    {
+      "id": 1050193,
+      "name": "Cabinet de Soins la Delivrance",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.839,
+      "lon": 11.4797
+    },
+    {
+      "id": 1050194,
+      "name": "CS Sainte joss",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.834919999999999,
+      "lon": 11.485035
+    },
+    {
+      "id": 1050195,
+      "name": "Cabinet de Soins Cinsol",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8324,
+      "lon": 11.4859
+    },
+    {
+      "id": 1050196,
+      "name": "HD Biyem Assi",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.834,
+      "lon": 11.4852
+    },
+    {
+      "id": 1050200,
+      "name": "ADVANCED CARE HEALTH CENTER",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.83603707,
+      "lon": 11.48350183
+    },
+    {
+      "id": 1050203,
+      "name": "Cabinet de soins Sante Lumière",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8366,
+      "lon": 11.4857
+    },
+    {
+      "id": 1050204,
+      "name": "Cabinet de soins St Etienne (cnls)",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.83343527,
+      "lon": 11.4839237
+    },
+    {
+      "id": 1050207,
+      "name": "Cabinet de Soins Nectar",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8401,
+      "lon": 11.4819
+    },
+    {
+      "id": 1050211,
+      "name": "CS La Performance",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.8687,
+      "lon": 11.4908
+    },
+    {
+      "id": 1050212,
+      "name": "Cab Soins La Reference",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.8667,
+      "lon": 11.4955
+    },
+    {
+      "id": 1050214,
+      "name": "Full Bright Health Center",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.8638,
+      "lon": 11.4903
+    },
+    {
+      "id": 1050215,
+      "name": "CS Ste Benedicte",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.867005,
+      "lon": 11.49340166666667
+    },
+    {
+      "id": 1050216,
+      "name": "CS St Oscar",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.86312,
+      "lon": 11.49402
+    },
+    {
+      "id": 1050217,
+      "name": "Cabinet de Soins Espoir Melen",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.8634,
+      "lon": 11.4938
+    },
+    {
+      "id": 1050219,
+      "name": "CS la Providence",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.8643,
+      "lon": 11.4904
+    },
+    {
+      "id": 1050221,
+      "name": "Cabinet de Soins la Misericorde 2",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.822793085128069,
+      "lon": 11.48257727734745
+    },
+    {
+      "id": 1050224,
+      "name": "Cabinet de Soins le Polyvalent",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8368,
+      "lon": 11.4728
+    },
+    {
+      "id": 1050225,
+      "name": "CS Ste jackie",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.823697660118341,
+      "lon": 11.47321175783873
+    },
+    {
+      "id": 1050226,
+      "name": "CS Sante Espoir",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.833650122396648,
+      "lon": 11.46655677817762
+    },
+    {
+      "id": 1050227,
+      "name": "CM Mere et Enfant Anako",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8298,
+      "lon": 11.4772
+    },
+    {
+      "id": 1050228,
+      "name": "CM Sainte Christine",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.834390579722822,
+      "lon": 11.47850560024381
+    },
+    {
+      "id": 1050229,
+      "name": "CS Sainte Famille",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.834194610826671,
+      "lon": 11.47620384581387
+    },
+    {
+      "id": 1050231,
+      "name": "Cabinet Medical la Gloire",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.83,
+      "lon": 11.4727
+    },
+    {
+      "id": 1050234,
+      "name": "CM ASATT",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.83585125207901,
+      "lon": 11.47481152787805
+    },
+    {
+      "id": 1050235,
+      "name": "CMA Mendong",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8268,
+      "lon": 11.478
+    },
+    {
+      "id": 1050236,
+      "name": "CS Adonai Health Care",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.834775979630649,
+      "lon": 11.46983007900417
+    },
+    {
+      "id": 1050237,
+      "name": "Centre Medical et Social Ngog Lituba",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8346,
+      "lon": 11.4669
+    },
+    {
+      "id": 1050239,
+      "name": "Cabinet de Soins Saint Joseph",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.83137246593833,
+      "lon": 11.46383215673268
+    },
+    {
+      "id": 1050240,
+      "name": "Cabinet de Soins Oxygène",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8322,
+      "lon": 11.4678
+    },
+    {
+      "id": 1050244,
+      "name": "CS Marie Immaculee",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8345,
+      "lon": 11.4786
+    },
+    {
+      "id": 1050246,
+      "name": "Cabinet de Soins Sante et Vie",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.831436671316624,
+      "lon": 11.47370235063136
+    },
+    {
+      "id": 1050247,
+      "name": "CS ACASOVI",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.830980528146029,
+      "lon": 11.47474237717688
+    },
+    {
+      "id": 1050248,
+      "name": "Cabinet de Soins Alma Ata",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8313,
+      "lon": 11.4726
+    },
+    {
+      "id": 1050249,
+      "name": "CM Ste Mathilde",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.830148037523031,
+      "lon": 11.47549339570105
+    },
+    {
+      "id": 1050251,
+      "name": "CM la Misericorde Divine",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.862395,
+      "lon": 11.50371833333333
+    },
+    {
+      "id": 1050252,
+      "name": "CS le Samaritain",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.867015,
+      "lon": 11.50384166666666
+    },
+    {
+      "id": 1050253,
+      "name": "CS Horizon femme",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.865505,
+      "lon": 11.49663333333333
+    },
+    {
+      "id": 1050254,
+      "name": "CHU",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.863160716666667,
+      "lon": 11.49709365
+    },
+    {
+      "id": 1050255,
+      "name": "CM Gendarmerie Nationale",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.8697,
+      "lon": 11.5005
+    },
+    {
+      "id": 1050256,
+      "name": "CS Cerazo Azem",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.8706,
+      "lon": 11.4994
+    },
+    {
+      "id": 1050257,
+      "name": "CS Nlouh",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.8655,
+      "lon": 11.497
+    },
+    {
+      "id": 1050261,
+      "name": "CS EDEN",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.841205,
+      "lon": 11.48604
+    },
+    {
+      "id": 1050262,
+      "name": "CM LA Charite",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.842126666666667,
+      "lon": 11.48967166666667
+    },
+    {
+      "id": 1050265,
+      "name": "Cabinet de soins St Michel",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.84341,
+      "lon": 11.48968833333333
+    },
+    {
+      "id": 1050266,
+      "name": "CS Source de Siloe",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.843171666666667,
+      "lon": 11.49085
+    },
+    {
+      "id": 1050272,
+      "name": "Cabinet de Soins Acacias",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8415,
+      "lon": 11.4884
+    },
+    {
+      "id": 1050273,
+      "name": "Complexe Medical Sota",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8448,
+      "lon": 11.4898
+    },
+    {
+      "id": 1050275,
+      "name": "CS Arche de Noe",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.85178763885051,
+      "lon": 11.47306088358164
+    },
+    {
+      "id": 1050276,
+      "name": "Cabinet de soins Bienfaisance",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8506,
+      "lon": 11.4694
+    },
+    {
+      "id": 1050277,
+      "name": "Cabinet de Soins Misericorde 1",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8502,
+      "lon": 11.4625581074506
+    },
+    {
+      "id": 1050278,
+      "name": "CS LA REGENERATION",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.853608858771622,
+      "lon": 11.47360025905073
+    },
+    {
+      "id": 1050279,
+      "name": "CS Professionnel Sans Frontiere",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.852485621952088,
+      "lon": 11.47804995769808
+    },
+    {
+      "id": 1050280,
+      "name": "CS Bon Secours Plus",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.852365654893219,
+      "lon": 11.47886208258569
+    },
+    {
+      "id": 1050281,
+      "name": "CS Espoir et Vie",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8564,
+      "lon": 11.4735
+    },
+    {
+      "id": 1050282,
+      "name": "Cs saint prospère",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.85994624812156,
+      "lon": 11.47416436113417
+    },
+    {
+      "id": 1050284,
+      "name": "CS God heals",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.858074275776744,
+      "lon": 11.47434717044234
+    },
+    {
+      "id": 1050285,
+      "name": "CS La Noblesse",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.850434212945402,
+      "lon": 11.46970259025693
+    },
+    {
+      "id": 1050286,
+      "name": "CNRPH",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.85248,
+      "lon": 11.47966166666667
+    },
+    {
+      "id": 1050287,
+      "name": "Cabinet de Soins Main Douce (cnls)",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8547,
+      "lon": 11.4749
+    },
+    {
+      "id": 1050288,
+      "name": "Cabinet de soins la Patience",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8539,
+      "lon": 11.4792
+    },
+    {
+      "id": 1050289,
+      "name": "Ngonmeda (Centre Hospitalier Pédiatrique et Gynécologique)",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.852228823978042,
+      "lon": 11.47948147201848
+    },
+    {
+      "id": 1050291,
+      "name": "Cabinet de Soins Medicaux Autoclave",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8501,
+      "lon": 11.4714
+    },
+    {
+      "id": 1050293,
+      "name": "Cs Sainte Catherine",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.859945577569306,
+      "lon": 11.47322030737996
+    },
+    {
+      "id": 1050295,
+      "name": "Gilead Medical Service",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.8563,
+      "lon": 11.491
+    },
+    {
+      "id": 1050296,
+      "name": "Cabinet Medical Ste Veronique",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.851093333333333,
+      "lon": 11.48774
+    },
+    {
+      "id": 1050297,
+      "name": "Founla Health Care",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.85728,
+      "lon": 11.490655
+    },
+    {
+      "id": 1050301,
+      "name": "CS Bejema Health Care",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.850913333333333,
+      "lon": 11.488725
+    },
+    {
+      "id": 1050302,
+      "name": "CS Jesus Care",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.854851666666666,
+      "lon": 11.489065
+    },
+    {
+      "id": 1050303,
+      "name": "Humanity Health Association",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.8544,
+      "lon": 11.4893
+    },
+    {
+      "id": 1050305,
+      "name": "Cabinet de Soins la Bonne Sante",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.8566,
+      "lon": 11.4896
+    },
+    {
+      "id": 1050306,
+      "name": "CS Roseraie",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.855385,
+      "lon": 11.48908
+    },
+    {
+      "id": 1050307,
+      "name": "CS Mere Responsable",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.850351666666667,
+      "lon": 11.48613833333333
+    },
+    {
+      "id": 1386578,
+      "name": "CS Positive Health Surgerie",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.839202883333333,
+      "lon": 11.47303813333333
+    },
+    {
+      "id": 1386581,
+      "name": "St Martin",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.829627353698015,
+      "lon": 11.47811844013631
+    },
+    {
+      "id": 1386590,
+      "name": "CM DOH N°1",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.830283333333333,
+      "lon": 11.48131333333333
+    },
+    {
+      "id": 1386592,
+      "name": "CM A Hand To Humanity",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.855499606579542,
+      "lon": 11.47993890568614
+    },
+    {
+      "id": 1386682,
+      "name": "CS Espoir et Vie",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8343443,
+      "lon": 11.45702135
+    },
+    {
+      "id": 1386684,
+      "name": "CS Saint JUDE",
+      "area": "AS Melen",
+      "district": "District Biyem Assi",
+      "lat": 3.865878333333333,
+      "lon": 11.48766333333333
+    },
+    {
+      "id": 1386685,
+      "name": "CM ROI Salomon",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.831310188397765,
+      "lon": 11.46340669132769
+    },
+    {
+      "id": 1398426,
+      "name": "CM CMIES",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.820945,
+      "lon": 11.47199666666667
+    },
+    {
+      "id": 1398427,
+      "name": "Cabinet de soins Thérapy Center",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.824541340582073,
+      "lon": 11.47648313082755
+    },
+    {
+      "id": 1398428,
+      "name": "CS Saint Ustins Medical Center",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.827002393081784,
+      "lon": 11.47891581058502
+    },
+    {
+      "id": 1882301,
+      "name": "CS Innovation",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.819566666666666,
+      "lon": 11.46878166666667
+    },
+    {
+      "id": 1883203,
+      "name": "CS El rapha Shalom",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.836175,
+      "lon": 11.47493333333333
+    },
+    {
+      "id": 1887593,
+      "name": "Cs Angelus",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.849908333333333,
+      "lon": 11.482525
+    },
+    {
+      "id": 1887594,
+      "name": "CS st joseph Cemino",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.849903333333333,
+      "lon": 11.48260666666667
+    },
+    {
+      "id": 1888981,
+      "name": "CS MERE SUZANNE",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.82988,
+      "lon": 11.47180166666667
+    },
+    {
+      "id": 1889224,
+      "name": "centre de santé saint Dominus",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8301,
+      "lon": 11.47298833333334
+    },
+    {
+      "id": 1889470,
+      "name": "CS PERSEVERANCE DIVINE",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8287628,
+      "lon": 11.4614219
+    },
+    {
+      "id": 1889710,
+      "name": "CS Ndi and sobela",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": 3.853798,
+      "lon": 11.4836048
+    },
+    {
+      "id": 1889713,
+      "name": "CS premiers secours",
+      "area": "AS Mvog betsi",
+      "district": "District Biyem Assi",
+      "lat": 3.8621425,
+      "lon": 11.4862735
+    },
+    {
+      "id": 1890860,
+      "name": "CM CARREFOUR SANTE MENDONG",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.827133333333333,
+      "lon": 11.471475
+    },
+    {
+      "id": 1890982,
+      "name": "AMAZING GRÂCE",
+      "area": "AS Nkolbikok",
+      "district": "District Biyem Assi",
+      "lat": 3.87000335,
+      "lon": 11.48956325
+    },
+    {
+      "id": 1891280,
+      "name": "Fondation médicale main qui soigne",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8362455368042,
+      "lon": 11.47418975830078
+    },
+    {
+      "id": 1892747,
+      "name": "cs saint Augustin",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8010907,
+      "lon": 11.4773973
+    },
+    {
+      "id": 1900955,
+      "name": "sos",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.858751666666667,
+      "lon": 11.49065666666667
+    },
+    {
+      "id": 2393228,
+      "name": "CS FAITH",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.808998333333333,
+      "lon": 11.47271333333333
+    },
+    {
+      "id": 2548343,
+      "name": "CM GP",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.86185,
+      "lon": 11.488005
+    },
+    {
+      "id": 2552172,
+      "name": "CM Sainte Ange",
+      "area": "AS Elig Effa",
+      "district": "District Biyem Assi",
+      "lat": 3.8199397,
+      "lon": 11.4695326
+    },
+    {
+      "id": 2557016,
+      "name": "CS divine blessing",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8255316,
+      "lon": 11.4695868
+    },
+    {
+      "id": 2557017,
+      "name": "CS santé pour tous",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8279037,
+      "lon": 11.4697071
+    },
+    {
+      "id": 2557018,
+      "name": "CS les délices",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8279027,
+      "lon": 11.4697069
+    },
+    {
+      "id": 2557019,
+      "name": "Guérison divine",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8279027,
+      "lon": 11.4697069
+    },
+    {
+      "id": 2557020,
+      "name": "CS confiance plus",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8279027,
+      "lon": 11.4697069
+    },
+    {
+      "id": 2557023,
+      "name": "centre médical providence plus",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8359613,
+      "lon": 11.4579715
+    },
+    {
+      "id": 2557024,
+      "name": "CS peace home",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8202122,
+      "lon": 11.4706518
+    },
+    {
+      "id": 2557026,
+      "name": "CS yawé rophi",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8378135,
+      "lon": 11.4582075
+    },
+    {
+      "id": 2557075,
+      "name": "CS LELE",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8595111,
+      "lon": 11.4731369
+    },
+    {
+      "id": 2557082,
+      "name": "ZION CLINIC",
+      "area": "AS Akok-ndoe",
+      "district": "District Biyem Assi",
+      "lat": 3.8613994,
+      "lon": 11.4720719
+    },
+    {
+      "id": 2557923,
+      "name": "cabinet de soin Sainte Famille",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8308628,
+      "lon": 11.4708271
+    },
+    {
+      "id": 2559016,
+      "name": "CS SAINTE ANDRÉA",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.805893333333333,
+      "lon": 11.48023333333333
+    },
+    {
+      "id": 2559018,
+      "name": "CS PROMESCAM",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8153642,
+      "lon": 11.4736585
+    },
+    {
+      "id": 2559023,
+      "name": "CS PERSÉVÉRANCE",
+      "area": "AS Simbok",
+      "district": "District Biyem Assi",
+      "lat": 3.8139335,
+      "lon": 11.4734919
+    },
+    {
+      "id": 2562076,
+      "name": "CS mains de grâce",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.841998,
+      "lon": 11.4521929
+    },
+    {
+      "id": 2562078,
+      "name": "CS ngonmeda",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8435205,
+      "lon": 11.4550325
+    },
+    {
+      "id": 2562086,
+      "name": "CS Emmanuela Raphaëla",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8383587,
+      "lon": 11.4631758
+    },
+    {
+      "id": 2562089,
+      "name": "CS prince des anges",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8405574,
+      "lon": 11.4656065
+    },
+    {
+      "id": 2563103,
+      "name": "CM SAINT BLAISE",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8320656,
+      "lon": 11.459418
+    },
+    {
+      "id": 2563105,
+      "name": "centre médical  saint philip",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8333231,
+      "lon": 11.4722822
+    },
+    {
+      "id": 2564223,
+      "name": "FRANCEL MEDICAL CENTER",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.84534955,
+      "lon": 11.48324862
+    },
+    {
+      "id": 2564224,
+      "name": "GOD WILL HEALTH CENTER",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8465498,
+      "lon": 11.4848533
+    },
+    {
+      "id": 2564226,
+      "name": "HEALTH WATCH PROMOTION CENTER",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.84628532,
+      "lon": 11.48244134
+    },
+    {
+      "id": 2564231,
+      "name": "GOSHEN MEDICAL CENTER",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8387189,
+      "lon": 11.48130826
+    },
+    {
+      "id": 2564232,
+      "name": "CENTRE DE SANTE EDEN BALLA CARE FOR ALL",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8355885,
+      "lon": 11.4889831
+    },
+    {
+      "id": 2564234,
+      "name": "CENTRE MEDICAL KOUNGOUM",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8351511,
+      "lon": 11.4858969
+    },
+    {
+      "id": 2564757,
+      "name": "Centre Medical La Grâce",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8406253,
+      "lon": 11.4665018
+    },
+    {
+      "id": 2565452,
+      "name": "Secour Royal",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8254,
+      "lon": 11.46583
+    },
+    {
+      "id": 2565453,
+      "name": "LA GLOIRE",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8265878,
+      "lon": 11.4643455
+    },
+    {
+      "id": 2565462,
+      "name": "CS marie Thérèse",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8459122,
+      "lon": 11.4628419
+    },
+    {
+      "id": 2565465,
+      "name": "CS sainte Rita",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8462582,
+      "lon": 11.460357
+    },
+    {
+      "id": 2565471,
+      "name": "CS avenir",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8468055,
+      "lon": 11.4660368
+    },
+    {
+      "id": 2567451,
+      "name": "CABINET DE SOINS SAINTE MARIE PLUS",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8369441,
+      "lon": 11.4820931
+    },
+    {
+      "id": 2577641,
+      "name": "CENTRE DE REFERENCE EN DIAGNOSTIC MEDICAL",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.83316344,
+      "lon": 11.48349046
+    },
+    {
+      "id": 2577643,
+      "name": "CABINET MEDICAL LA REFERENCE (CA.ME.REF)",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.83184215,
+      "lon": 11.48424466
+    },
+    {
+      "id": 2577934,
+      "name": "centre médical  UNICARE",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8241767,
+      "lon": 11.4776132
+    },
+    {
+      "id": 2577936,
+      "name": "centre de sante  Rapha",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8370544,
+      "lon": 11.4677331
+    },
+    {
+      "id": 2577937,
+      "name": "RAPHA LIGHT HOSPITAL",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8348607,
+      "lon": 11.4780596
+    },
+    {
+      "id": 2577938,
+      "name": "centre médical CEMECOD",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.827677136287093,
+      "lon": 11.47587259300053
+    },
+    {
+      "id": 2579872,
+      "name": "CS Siloam",
+      "area": "AS Biscuiterie",
+      "district": "District Biyem Assi",
+      "lat": 3.858015,
+      "lon": 11.49141833333334
+    },
+    {
+      "id": 2592010,
+      "name": "Cabinet Medical DOH New",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8334094,
+      "lon": 11.4827918
+    },
+    {
+      "id": 2593681,
+      "name": "CS sainte Elisabeth",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8340249,
+      "lon": 11.4767675
+    },
+    {
+      "id": 2593682,
+      "name": "CS god win",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8382757,
+      "lon": 11.4751257
+    },
+    {
+      "id": 2593686,
+      "name": "CS le progrès",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8407321,
+      "lon": 11.4771346
+    },
+    {
+      "id": 2593692,
+      "name": "sainte Marie plus",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": 3.8362445,
+      "lon": 11.4816938
+    },
+    {
+      "id": 2601676,
+      "name": "FAMILY MEDICAL CENTER",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.84164915,
+      "lon": 11.48201578
+    },
+    {
+      "id": 2601677,
+      "name": "Cabinet de soins la Pitié",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8466126,
+      "lon": 11.4802376
+    },
+    {
+      "id": 2611015,
+      "name": "Centre de Santé Radeko",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": 3.8376991,
+      "lon": 11.48551174
+    },
+    {
+      "id": 3113886,
+      "name": "CS Marc Vivian foe",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": 3.8923795,
+      "lon": 11.5123311
+    },
+    {
+      "id": 3113912,
+      "name": "CS saint Daniel",
+      "area": "AS Simbock 2",
+      "district": "District Biyem Assi",
+      "lat": 3.892382,
+      "lon": 11.5123357
+    },
+    {
+      "id": 3455533,
+      "name": "saint joseph",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 5.22598567392022,
+      "lon": 11.87268421053886
+    },
+    {
+      "id": 3455741,
+      "name": "médical centre al -ummah community",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8325967,
+      "lon": 11.4606699
+    },
+    {
+      "id": 3455742,
+      "name": "cabinet de soins le bon berger",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8332547,
+      "lon": 11.4617736
+    },
+    {
+      "id": 3456813,
+      "name": "centre médical promotion sociale annexe mendong",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8369298,
+      "lon": 11.4727349
+    },
+    {
+      "id": 3472850,
+      "name": "CS Zion",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4842979,
+      "name": "Centre De Santé Carnelian",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.8256919,
+      "lon": 11.4772028
+    },
+    {
+      "id": 4844385,
+      "name": "Cabinet Médical De La Foi",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4846671,
+      "name": "Centre Médical Alexander Fleming",
+      "area": "AS Mvog-Betsi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847066,
+      "name": "ST JOSEPH PLUS",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847067,
+      "name": "DHCS",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847068,
+      "name": "ST TIMOTHE",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847069,
+      "name": "CAMHEALTH",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847070,
+      "name": "CEMAPEF",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847071,
+      "name": "ESPÉRANCE",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847072,
+      "name": "TRAUMA",
+      "area": "AS Biyem Assi 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4847773,
+      "name": "New Life",
+      "area": "AS Biyem Assi 1",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4848546,
+      "name": "Centre De Santé",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 4849436,
+      "name": "Saint CHARBEL CARDIAC CENTER",
+      "area": "AS Mendong",
+      "district": "District Biyem Assi",
+      "lat": 3.830638,
+      "lon": 11.478693
+    },
+    {
+      "id": 5013181,
+      "name": "Clinique Shilo",
+      "area": "AS Etoug Ebe",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 5013183,
+      "name": "Clinique Solumed",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": 5013198,
+      "name": "CS Confiance Plus",
+      "area": "AS Etoug-Ebe 2",
+      "district": "District Biyem Assi",
+      "lat": null,
+      "lon": null
+    }
+  ]
+}

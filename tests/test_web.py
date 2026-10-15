@@ -121,6 +121,46 @@ def test_library_and_calendar_view():
     check("Calendrier exploratoire — âge négatif plafonné sans planter", s == 200)
 
 
+def test_ministry_mode_chat_disabled():
+    """CHAT_ENABLED=false : /api/chat doit être réellement bloqué, pas juste caché côté interface."""
+    os.environ.pop("LLM_API_KEY", None)
+    os.environ["CHAT_ENABLED"] = "false"
+    base = serve(web.make_server("127.0.0.1", 0))
+    s, st = call(base, "/api/start", {"language": "fr"})
+    check("Mode ministère — chat_enabled annoncé à false", st["chat_enabled"] is False)
+    sid = st["session_id"]
+    s, r = call(base, "/api/chat", {"session_id": sid, "message": "bonjour"})
+    check("Mode ministère — /api/chat bloqué même en appel direct (403)", s == 403)
+    s, r = call(base, "/api/library", {"session_id": sid})
+    check("Mode ministère — le reste (bibliothèque) continue de fonctionner", s == 200 and len(r["vaccines"]) > 0)
+    s, r = call(base, "/api/guided/checklist", {"session_id": sid, "age_months": 9})
+    check("Mode ministère — le mode guidé continue de fonctionner", s == 200)
+    os.environ.pop("CHAT_ENABLED", None)
+
+
+def test_facility_routes():
+    """Routes de recherche de structures de santé — lecture seule, jamais via le LLM."""
+    os.environ.pop("LLM_API_KEY", None)
+    base = serve(web.make_server("127.0.0.1", 0))
+    s, st = call(base, "/api/start", {"language": "fr"})
+    sid = st["session_id"]
+
+    s, r = call(base, "/api/facilities/areas", {"session_id": sid})
+    check("Structures web — liste des quartiers disponible", s == 200 and len(r["areas"]) == 14)
+
+    s, r = call(base, "/api/facilities/nearby", {"session_id": sid, "lat": 3.858, "lon": 11.489})
+    check("Structures web — recherche GPS fonctionne", s == 200 and len(r["facilities"]) > 0)
+
+    s, r = call(base, "/api/facilities/nearby", {"session_id": sid, "lat": 999, "lon": 11.489})
+    check("Structures web — coordonnées aberrantes rejetées proprement", s == 400)
+
+    s, r = call(base, "/api/facilities/area", {"session_id": sid, "area": "Simbock"})
+    check("Structures web — recherche par quartier fonctionne", s == 200 and len(r["facilities"]) > 0)
+
+    s, r = call(base, "/api/facilities/area", {"session_id": sid, "area": ""})
+    check("Structures web — quartier vide rejeté proprement", s == 400)
+
+
 def test_guided_mode():
     """Mode 'cocher les vaccins' — ne doit jamais dépendre du LLM."""
     os.environ.pop("LLM_API_KEY", None)
@@ -195,6 +235,8 @@ if __name__ == "__main__":
     test_rules_mode()
     test_llm_mode()
     test_library_and_calendar_view()
+    test_ministry_mode_chat_disabled()
+    test_facility_routes()
     test_guided_mode()
     test_llm_fallback_to_rules()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")

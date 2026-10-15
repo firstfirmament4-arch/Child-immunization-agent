@@ -232,6 +232,27 @@ def test_official_calendar_corrections():
           not any("Vitamine" in m["vaccine"] or "MILDA" in m["vaccine"] for m in find_missing_vaccines(9, {})))
 
 
+def test_facility_search():
+    """Recherche de structures de santé (Biyem-Assi, données MINSANTE du 11 octobre)."""
+    from agent.toolbox import AgentToolbox
+    s = new_session()
+    tb = AgentToolbox(s)
+
+    r = tb.find_health_facility(latitude=3.858, longitude=11.489)
+    check("Structures — recherche GPS retourne des résultats triés par distance", r["method"] == "gps" and len(r["facilities"]) > 0)
+    dists = [f["distance_km"] for f in r["facilities"]]
+    check("Structures — résultats bien triés du plus proche au plus loin", dists == sorted(dists))
+
+    r2 = tb.find_health_facility(area_name="Mendong")
+    check("Structures — recherche par quartier fonctionne", r2["method"] == "area" and len(r2["facilities"]) > 0)
+
+    r3 = tb.find_health_facility(area_name="Quartier Imaginaire Qui N'existe Pas")
+    check("Structures — quartier inconnu renvoie les quartiers valides plutôt que planter", r3["facilities"] == [] and len(r3.get("known_areas", [])) > 0)
+
+    r4 = tb.find_health_facility()
+    check("Structures — ni GPS ni quartier fourni -> erreur explicite, pas d'invention", "error" in r4)
+
+
 def run_all():
     test_record_age_and_over_five_warning()
     test_multi_dose_via_toolbox()
@@ -244,6 +265,7 @@ def run_all():
     test_multi_child()
     test_visible_reasoning_trace()
     test_official_calendar_corrections()
+    test_facility_search()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")
     if FAILED:
         sys.exit(1)

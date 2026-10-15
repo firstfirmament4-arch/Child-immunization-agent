@@ -93,6 +93,45 @@ def get_other_interventions(age_months: float, language: str = "fr"):
     return out
 
 
+def _haversine_km(lat1, lon1, lat2, lon2):
+    """Distance à vol d'oiseau en km. Pur calcul déterministe — jamais estimé par le LLM."""
+    import math
+    r = 6371.0
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dlambda / 2) ** 2
+    return 2 * r * math.asin(min(1, math.sqrt(a)))
+
+
+def list_health_areas():
+    """Les 14 aires de santé connues du secteur Biyem-Assi — pour proposer un choix au parent."""
+    data = _load("health_facilities_biyem_assi.json")
+    return sorted(set(f["area"] for f in data["facilities"]))
+
+
+def find_nearby_facilities(lat: float, lon: float, max_results: int = 5):
+    """
+    Structures les plus proches d'une position GPS, triées par distance réelle (Haversine).
+    Ne retourne que des structures enregistrées officiellement — jamais inventées.
+    """
+    data = _load("health_facilities_biyem_assi.json")
+    candidates = [f for f in data["facilities"] if f["lat"] is not None and f["lon"] is not None]
+    scored = sorted(
+        ({**f, "distance_km": round(_haversine_km(lat, lon, f["lat"], f["lon"]), 2)} for f in candidates),
+        key=lambda f: f["distance_km"],
+    )
+    return {"facilities": scored[:max_results], "source": data["source"], "last_verified": data["last_verified"]}
+
+
+def find_facilities_by_area(area_name: str, max_results: int = 10):
+    """Structures d'une aire de santé donnée (correspondance approximative, insensible à la casse)."""
+    data = _load("health_facilities_biyem_assi.json")
+    needle = area_name.lower().replace("as ", "").strip()
+    matches = [f for f in data["facilities"] if needle in f["area"].lower()]
+    return {"facilities": matches[:max_results], "source": data["source"], "last_verified": data["last_verified"]}
+
+
 def find_missing_vaccines(age_months: float, vaccines_received: dict):
     """
     Compare l'âge de l'enfant aux doses confirmées par vaccin (comptage, pas juste oui/non),

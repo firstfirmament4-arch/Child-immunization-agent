@@ -40,6 +40,56 @@ Tous les anciens tests sont passés sans modification grâce à une extension ad
 `vaccines` n'a pas changé, on a juste ajouté un champ `autres` à côté) — zéro régression malgré
 une réécriture substantielle des données.
 
+## P2 : localisation de structures de santé (11 octobre 2026)
+
+Données officielles MINSANTE reçues pour le secteur Biyem-Assi (Yaoundé) : 222 structures de
+santé validées, 14 aires de santé, coordonnées GPS pour 206 d'entre elles. Converties dans
+`knowledge/health_facilities_biyem_assi.json`.
+
+**Fonctionnement** : distance calculée par la formule de Haversine (déterministe, jamais estimée
+par le LLM). Deux chemins :
+- **GPS** (si le parent autorise la géolocalisation du navigateur) : structures triées par
+  distance réelle, la plus proche en premier.
+- **Repli par quartier** (si la position est refusée ou indisponible) : le parent choisit son
+  aire de santé dans une liste de 14, et voit les structures de cette zone — sans distance,
+  mais sans jamais bloquer le parcours.
+
+**Garde-fou important** : une structure "enregistrée" ne veut pas dire qu'un vaccin précis y est
+disponible aujourd'hui. Le message l'indique explicitement à l'écran, et le system prompt du LLM
+interdit formellement de garantir une disponibilité ou d'inventer une structure, une adresse ou
+une distance hors de ce que l'outil renvoie.
+
+**Accès** : nouvelle entrée "📍 Trouver une structure de santé" dans le menu d'accueil (lecture
+seule, sans LLM, comme la bibliothèque et le calendrier) + nouvel outil `find_health_facility`
+que l'agent conversationnel appelle spontanément une fois des vaccins manquants identifiés.
+
+**Limite actuelle, assumée** : seul le secteur Biyem-Assi est couvert pour l'instant — c'est la
+seule zone pour laquelle le ministère a fourni des données validées à ce jour.
+
+## Mode Ministère : un seul cerveau, deux façades (9 octobre 2026)
+
+La cheffe médecin des vaccinations approuve la Web App mais refuse l'option "discuter librement" —
+question d'éthique et de transparence, pas de qualité de l'agent. Plutôt que deux projets séparés
+(risqué à 6 jours du build), un seul code, un réglage côté serveur.
+
+`CHAT_ENABLED=false` (variable d'environnement) désactive **réellement** le chat — pas juste caché
+dans l'interface : `/api/chat` répond 403 même en appel direct, contournement de l'interface
+inclus (testé). Tout le reste (bibliothèque des vaccins, calendrier exploratoire, mode guidé,
+fiche de suivi) continue de fonctionner normalement, puisque c'est justement ce que le ministère
+valide. C'est la même distinction PEV vs hors-PEV, misconceptions, multi-enfants, etc. — rien
+n'est dupliqué, un seul cerveau.
+
+**Pour déployer la version Ministère séparément** (toujours gratuit, même dépôt GitHub) :
+1. Sur Render : New → Web Service (pas Blueprint cette fois, pour ne pas dupliquer `render.yaml`)
+2. Connecte le même dépôt GitHub
+3. Build command : `pip install -r requirements.txt` — Start command : `python web/server.py`
+4. Variables d'environnement : les mêmes que le déploiement hackathon, **plus** `CHAT_ENABLED=false`
+5. Render donne une URL différente (ex: `child-immunization-agent-ministere.onrender.com`) —
+   celle-ci à partager avec le ministère, l'originale (avec chat) pour le hackathon.
+
+Un seul `git push` met à jour les deux déploiements en même temps, puisqu'ils partagent le même
+dépôt — pas de double maintenance.
+
 ## Fiche de suivi modernisée (nouveau)
 
 La fiche de suivi (dialogue "Fiche de suivi" du chat, et écran de résultat du mode guidé) n'est

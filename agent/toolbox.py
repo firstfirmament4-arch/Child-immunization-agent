@@ -12,6 +12,9 @@ from tools.knowledge_tools import (
     correct_misconception,
     find_missing_vaccines,
     get_other_interventions,
+    find_nearby_facilities,
+    find_facilities_by_area,
+    list_health_areas,
 )
 from tools.session_tools import (
     set_age, add_vaccine, generate_followup_summary,
@@ -84,6 +87,24 @@ class AgentToolbox:
             missing = find_missing_vaccines(self.session["age_months"], self.session["vaccines_received"])
         summary_text = generate_followup_summary(self.session, missing or [], self.session.get("language", "fr"))
         return {"summary": summary_text}
+
+    def find_health_facility(self, latitude: float = None, longitude: float = None, area_name: str = None) -> dict:
+        """
+        Cherche une structure de santé réelle, soit par position GPS (distance triée), soit par
+        nom de quartier/aire de santé. Ne couvre QUE le secteur Biyem-Assi (Yaoundé) pour l'instant.
+        Ne garantit jamais la disponibilité d'un vaccin précis — seulement que la structure existe.
+        """
+        if latitude is not None and longitude is not None:
+            result = find_nearby_facilities(latitude, longitude)
+            result["method"] = "gps"
+        elif area_name:
+            result = find_facilities_by_area(area_name)
+            result["method"] = "area"
+            if not result["facilities"]:
+                result["known_areas"] = list_health_areas()
+        else:
+            return {"error": "aucune position ni nom de zone fourni", "known_areas": list_health_areas()}
+        return result
 
     def start_new_child(self) -> dict:
         """Archive l'enfant actif et repart de zéro pour un nouvel enfant du même parent."""
@@ -182,6 +203,21 @@ TOOLS_SCHEMA = [
             "name": "generate_summary",
             "description": "Génère une fiche de suivi vaccinal textuelle pour le parent (âge, vaccins reçus, vaccins à vérifier). Appelle ceci quand le parent demande un résumé, ou spontanément une fois que tu as recueilli assez d'informations (âge + au moins une réponse sur les vaccins).",
             "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_health_facility",
+            "description": "Cherche une structure de santé réelle et enregistrée (secteur Biyem-Assi, Yaoundé, uniquement pour l'instant). Fournis latitude+longitude SI le parent a partagé sa position, sinon area_name avec le nom de son quartier. Appelle ceci quand le parent demande où se faire vacciner, une fois qu'un vaccin manquant a été identifié.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "latitude": {"type": "number", "description": "Latitude GPS si disponible."},
+                    "longitude": {"type": "number", "description": "Longitude GPS si disponible."},
+                    "area_name": {"type": "string", "description": "Nom du quartier/aire de santé si pas de GPS, ex: 'Mendong'."},
+                },
+            },
         },
     },
     {
