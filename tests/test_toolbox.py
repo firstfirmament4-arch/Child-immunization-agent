@@ -253,6 +253,23 @@ def test_facility_search():
     check("Structures — ni GPS ni quartier fourni -> erreur explicite, pas d'invention", "error" in r4)
 
 
+def test_proactive_facility_guidance():
+    from agent.toolbox import AgentToolbox
+    s = new_session(); s["lat"], s["lon"] = 3.858, 11.489
+    tb = AgentToolbox(s); tb.record_child_age(9)
+    r = tb.get_missing_vaccines()
+    check("Orientation auto — structures attachées dès que le GPS est connu", len(r.get("nearby_facilities", {}).get("facilities", [])) > 0)
+    s2 = new_session(); tb2 = AgentToolbox(s2); tb2.record_child_age(9); tb2.record_location("Mendong")
+    check("Orientation auto — fonctionne via un quartier dit en texte libre", "nearby_facilities" in tb2.get_missing_vaccines())
+    s3 = new_session(); tb3 = AgentToolbox(s3); tb3.record_child_age(9)
+    check("Orientation auto — sans position, signal location_needed (jamais de silence)", tb3.get_missing_vaccines().get("location_needed") is True)
+    s4 = new_session(); s4["lat"], s4["lon"] = 3.858, 11.489
+    tb4 = AgentToolbox(s4); tb4.record_child_age(0)
+    for v in ("BCG", "Polio (VPO)", "Hépatite B (dose de naissance)"): tb4.record_vaccine_dose(v, True)
+    r4 = tb4.get_missing_vaccines()
+    check("Orientation auto — aucune orientation si rien ne manque", "nearby_facilities" not in r4 and not r4.get("location_needed"))
+
+
 def run_all():
     test_record_age_and_over_five_warning()
     test_multi_dose_via_toolbox()
@@ -266,6 +283,7 @@ def run_all():
     test_visible_reasoning_trace()
     test_official_calendar_corrections()
     test_facility_search()
+    test_proactive_facility_guidance()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")
     if FAILED:
         sys.exit(1)

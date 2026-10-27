@@ -60,7 +60,21 @@ class AgentToolbox:
             return {"error": "âge de l'enfant inconnu — demande d'abord l'âge avant d'appeler cet outil"}
         missing = find_missing_vaccines(self.session["age_months"], self.session["vaccines_received"])
         self.session["last_missing"] = missing
-        return {"missing": missing, "age_months": self.session["age_months"]}
+        result = {"missing": missing, "age_months": self.session["age_months"]}
+        # Orientation automatique : ne dépend JAMAIS de l'initiative du LLM. Dès qu'il manque un
+        # vaccin et qu'une position est connue (GPS ou quartier), les structures les plus proches
+        # sont attachées au résultat. Sinon, signal explicite pour demander la position.
+        if missing:
+            lat, lon = self.session.get("lat"), self.session.get("lon")
+            area = self.session.get("area_name")
+            if lat is not None and lon is not None:
+                result["nearby_facilities"] = find_nearby_facilities(lat, lon, max_results=3)
+            elif area:
+                result["nearby_facilities"] = find_facilities_by_area(area, max_results=3)
+            else:
+                result["location_needed"] = True
+                result["known_areas"] = list_health_areas()
+        return result
 
     def get_vaccine_info(self, vaccine_name: str) -> dict:
         info = explain_vaccine_info(vaccine_name)
@@ -87,6 +101,11 @@ class AgentToolbox:
             missing = find_missing_vaccines(self.session["age_months"], self.session["vaccines_received"])
         summary_text = generate_followup_summary(self.session, missing or [], self.session.get("language", "fr"))
         return {"summary": summary_text}
+
+    def record_location(self, area_name: str) -> dict:
+        """Mémorise le quartier du parent (dit en texte libre) pour orienter automatiquement ensuite."""
+        self.session["area_name"] = area_name
+        return {"status": "ok", "area_name": area_name}
 
     def find_health_facility(self, latitude: float = None, longitude: float = None, area_name: str = None) -> dict:
         """
@@ -203,6 +222,18 @@ TOOLS_SCHEMA = [
             "name": "generate_summary",
             "description": "Génère une fiche de suivi vaccinal textuelle pour le parent (âge, vaccins reçus, vaccins à vérifier). Appelle ceci quand le parent demande un résumé, ou spontanément une fois que tu as recueilli assez d'informations (âge + au moins une réponse sur les vaccins).",
             "parameters": {"type": "object", "properties": {}},
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "record_location",
+            "description": "Mémorise le quartier du parent dès qu'il le mentionne en texte libre (ex: \"je suis à Mendong\"), pour que l'orientation vers une structure devienne automatique ensuite.",
+            "parameters": {
+                "type": "object",
+                "properties": {"area_name": {"type": "string", "description": "Nom du quartier mentionné par le parent."}},
+                "required": ["area_name"],
+            },
         },
     },
     {

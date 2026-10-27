@@ -161,6 +161,23 @@ def test_facility_routes():
     check("Structures web — quartier vide rejeté proprement", s == 400)
 
 
+def test_action_and_education():
+    os.environ.pop("LLM_API_KEY", None)
+    base = serve(web.make_server("127.0.0.1", 0))
+    s, st = call(base, "/api/start", {"language": "fr"}); sid = st["session_id"]
+    s, r = call(base, "/api/guided/submit", {"session_id": sid, "age_months": 9, "checked": [{"vaccine": "BCG"}], "lat": 3.858, "lon": 11.489})
+    check("Action — mode guidé + GPS : structures proches renvoyées automatiquement", len(r.get("nearby_facilities", {}).get("facilities", [])) > 0)
+    s, st2 = call(base, "/api/start", {"language": "fr"})
+    s, r2 = call(base, "/api/guided/submit", {"session_id": st2["session_id"], "age_months": 9, "checked": []})
+    check("Action — mode guidé sans GPS : demande explicite du quartier", r2.get("location_needed") is True)
+    s, r = call(base, "/api/library", {"session_id": sid})
+    check("Éducatif — chaque vaccin a une icône et une accroche", all(v["icon"] and v["hook"] for v in r["vaccines"]))
+    s, r = call(base, "/api/misconceptions", {"session_id": sid})
+    check("Éducatif — idées reçues avec phrase, correction et source", s == 200 and len(r["items"]) == 5 and all(m["claim"] and m["correction"] and m["source"] for m in r["items"]))
+    en = web.misconceptions_list("en")  # en mode règles le serveur force le français : on teste la fonction directement
+    check("Éducatif — idées reçues bien traduites en anglais", all(m["claim"].startswith('"') and "vaccin " not in m["claim"] for m in en))
+
+
 def test_guided_mode():
     """Mode 'cocher les vaccins' — ne doit jamais dépendre du LLM."""
     os.environ.pop("LLM_API_KEY", None)
@@ -237,6 +254,7 @@ if __name__ == "__main__":
     test_library_and_calendar_view()
     test_ministry_mode_chat_disabled()
     test_facility_routes()
+    test_action_and_education()
     test_guided_mode()
     test_llm_fallback_to_rules()
     print(f"\n{PASSED} tests réussis, {FAILED} échoués.")

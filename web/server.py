@@ -188,6 +188,8 @@ def vaccine_library(language: str) -> list:
     for name, data in info.items():
         out.append({
             "name": name,
+            "icon": data.get("icon", "💉"),
+            "hook": data.get(f"hook{lang_suffix}") or data.get("hook") or "",
             "disease_label": data.get(f"disease_label{lang_suffix}") or data.get("disease_label") or "",
             "route": data.get(f"route{lang_suffix}") or data.get("route") or "",
             "side_effects": data.get(f"side_effects{lang_suffix}") or data.get("side_effects") or [],
@@ -208,7 +210,7 @@ def calendar_overview(age_months: float, language: str) -> list:
         vaccines = []
         for name in visit.get("vaccines", []):
             info = explain_vaccine_info(name) or {}
-            vaccines.append({"name": name, "disease_label": info.get(f"disease_label{lang_suffix}") or info.get("disease_label") or ""})
+            vaccines.append({"name": name, "icon": info.get("icon", "💉"), "disease_label": info.get(f"disease_label{lang_suffix}") or info.get("disease_label") or ""})
         autres = []
         for name in visit.get("autres", []):
             info = describe_other_intervention(name, language)
@@ -223,6 +225,15 @@ def calendar_overview(age_months: float, language: str) -> list:
     return out
 
 
+def misconceptions_list(language: str) -> list:
+    """Idées reçues + correction sourcée, pour un parcours éducatif « vrai ou faux »."""
+    sfx = "_en" if language == "en" else ""
+    return [{"id": m["id"],
+             "claim": m.get(f"claim{sfx}") or m.get("claim") or "",
+             "correction": m.get(f"correction{sfx}") or m.get("correction") or "",
+             "source": m.get("source", "")} for m in _load_knowledge("misconceptions.json")]
+
+
 def health_areas() -> list:
     return list_health_areas()
 
@@ -235,7 +246,7 @@ def facilities_in_area(area_name: str) -> dict:
     return find_facilities_by_area(area_name)
 
 
-def guided_submit(entry: dict, age_months: float, checked: list) -> dict:
+def guided_submit(entry: dict, age_months: float, checked: list, lat: float = None, lon: float = None) -> dict:
     """Enregistre l'âge + les doses cochées (une par visite cochée) et calcule ce qui manque."""
     with entry["lock"]:
         session = entry["session"]
@@ -248,7 +259,12 @@ def guided_submit(entry: dict, age_months: float, checked: list) -> dict:
         session["last_missing"] = missing
         summary_text = generate_followup_summary(session, missing, entry["language"])
         data = generate_followup_data(session, missing, entry["language"])
-        return {"summary": summary_text, "data": data, "missing_count": len(missing)}
+        result = {"summary": summary_text, "data": data, "missing_count": len(missing)}
+        if missing and lat is not None and lon is not None:
+            result["nearby_facilities"] = find_nearby_facilities(lat, lon, max_results=3)
+        elif missing:
+            result["location_needed"] = True
+        return result
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -305,6 +321,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(400, {"error": "empty message"})
             if len(message) > MAX_MESSAGE_CHARS:
                 return self._json(413, {"error": ERRORS[lang]["too_long"]})
+            lat, lon = data.get("lat"), data.get("lon")
+            if isinstance(lat, (int, float)) and isinstance(lon, (int, float)) and -90 <= lat <= 90 and -180 <= lon <= 180:
+                with entry["lock"]:
+                    entry["session"]["lat"], entry["session"]["lon"] = lat, lon
             try:
                 return self._json(200, {"reply": chat(entry, message)})
             except Exception as e:  # ne jamais journaliser le contenu des messages
@@ -323,6 +343,9 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(400, {"error": "invalid age_months"})
             age_months = max(0.0, min(age_months, 120.0))
             return self._json(200, {"visits": calendar_overview(age_months, entry["language"])})
+
+        if self.path == "/api/misconceptions":
+            return self._json(200, {"items": misconceptions_list(entry["language"])})
 
         if self.path == "/api/facilities/areas":
             return self._json(200, {"areas": health_areas()})
@@ -363,7 +386,10 @@ class Handler(BaseHTTPRequestHandler):
             if not isinstance(checked, list) or len(checked) > 200:
                 return self._json(400, {"error": "invalid checked list"})
             age_months = max(0.0, min(age_months, 120.0))
-            return self._json(200, guided_submit(entry, age_months, checked))
+            lat, lon = data.get("lat"), data.get("lon")
+            if not (isinstance(lat, (int, float)) and isinstance(lon, (int, float)) and -90 <= lat <= 90 and -180 <= lon <= 180):
+                lat = lon = None
+            return self._json(200, guided_submit(entry, age_months, checked, lat, lon))
 
         if self.path == "/api/summary":
             return self._json(200, summary(entry))

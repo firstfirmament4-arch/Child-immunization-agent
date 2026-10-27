@@ -108,6 +108,20 @@
   @media (prefers-color-scheme: dark) { .pill-done { background:#15362a; color:#6fe0b4; } .pill-missing { background:#3a2f12; color:#ffcf6b; } }
   .sheet-empty { color:var(--muted); font-size:.88rem; }
   .sheet-disclaimer { font-size:.78rem; color:var(--muted); text-align:center; margin-top:.8rem; }
+  .action-banner { text-align:left; border-radius:1rem; padding:.9rem 1rem; margin:1rem 0 .6rem; color:#fff;
+                   background:linear-gradient(135deg, var(--brand), var(--brand2)); box-shadow:var(--shadow); }
+  .action-banner b { display:block; font-size:1.02rem; margin-bottom:.2rem; }
+  .vaccine-card summary .vicon { font-size:1.6rem; }
+  .vaccine-card .vhook { font-size:.95rem; line-height:1.45; padding:.1rem 0 .6rem; border-bottom:1px dashed var(--border);
+                         margin-bottom:.5rem; font-weight:600; }
+  .myth-card { text-align:left; border:1px solid var(--border); border-radius:.9rem; background:var(--card); margin-bottom:.7rem;
+               box-shadow:var(--shadow); overflow:hidden; }
+  .myth-card summary { list-style:none; cursor:pointer; padding:.9rem 1rem; font-weight:600; line-height:1.4; display:flex; gap:.6rem; align-items:flex-start; }
+  .myth-card summary::-webkit-details-marker { display:none; }
+  .myth-card .answer { font-size:.92rem; line-height:1.5; border-top:1px solid var(--border); padding:.8rem 1rem 1rem; }
+  .myth-card .verdict { display:inline-block; font-size:.75rem; font-weight:700; background:#fde8e8; color:#9b1c1c; padding:.15rem .55rem; border-radius:99px; margin-bottom:.5rem; }
+  @media (prefers-color-scheme: dark) { .myth-card .verdict { background:#3b1515; color:#ff9b9b; } }
+  .myth-card .src { display:block; margin-top:.6rem; font-size:.75rem; color:var(--muted); }
   .facility-card { text-align:left; border:1px solid var(--border); border-radius:.8rem; background:var(--card);
                     padding:.75rem .9rem; margin-bottom:.6rem; box-shadow:var(--shadow); }
   .facility-card .fname { font-weight:700; }
@@ -145,8 +159,17 @@
       <button class="big-btn" id="chooseCalendar"><span class="ic">📅</span> <span id="chooseCalendarLabel"></span></button>
       <button class="big-btn" id="chooseChat"><span class="ic">💬</span> <span id="chooseChatLabel"></span></button>
       <button class="big-btn" id="chooseGuided"><span class="ic">☑️</span> <span id="chooseGuidedLabel"></span></button>
+      <button class="big-btn" id="chooseMyths"><span class="ic">💡</span> <span id="chooseMythsLabel"></span></button>
       <button class="big-btn" id="chooseFacility"><span class="ic">📍</span> <span id="chooseFacilityLabel"></span></button>
       <button class="big-btn" id="choosePrivacy"><span class="ic">🔒</span> <span id="choosePrivacyLabel"></span></button>
+    </div>
+  </section>
+
+  <section id="myths" class="screen">
+    <div class="centered">
+      <h2 id="mythsTitle"></h2>
+      <p class="sub" id="mythsSub"></p>
+      <div id="mythsBody"></div>
     </div>
   </section>
 
@@ -206,6 +229,7 @@
   <section id="guidedResult" class="screen">
     <div class="centered">
       <h2 id="resultTitle"></h2>
+      <div id="guidedResultFacilities"></div>
       <div id="guidedResultText"></div>
       <button class="primary" id="resultChat"></button>
       <button class="big-btn" id="resultRestart" style="margin-top:.5rem"><span class="ic">🔄</span> <span id="resultRestartLabel"></span></button>
@@ -253,6 +277,12 @@ const UI = {
         routeLabel:"Voie d'administration", sideEffectsLabel:"Effets secondaires possibles", whyLabel:"Pourquoi c'est important",
         statusLabel:"Statut", sourceLabel:"Source", otherIntervention:"autre intervention (pas un vaccin)",
         privacyTitle:"Confidentialité & limites de l'agent",
+        chooseMyths:"Vrai ou faux ? Les idées reçues",
+        mythsTitle:"Vrai ou faux ?", mythsSub:"Touchez une phrase que l'on entend souvent pour découvrir ce que dit la science.",
+        mythVerdict:"❌ Idée reçue",
+        actionTitle:"👉 Prochaine étape : faire vacciner votre enfant",
+        actionText:"Voici les structures enregistrées les plus proches de vous.",
+        actionAskLoc:"Indiquez votre quartier pour voir où faire vacciner votre enfant :",
         chooseFacility:"Trouver une structure de santé",
         facilityTitle:"Trouver une structure de santé", facilitySub:"Secteur Biyem-Assi (Yaoundé) uniquement, pour l'instant.",
         facilityCaveat:"⚠️ Ces structures sont officiellement enregistrées, mais cela ne garantit pas qu'un vaccin précis y est disponible aujourd'hui. Confirmez toujours par téléphone ou sur place avant de vous déplacer.",
@@ -281,6 +311,12 @@ const UI = {
         routeLabel:"Route of administration", sideEffectsLabel:"Possible side effects", whyLabel:"Why it matters",
         statusLabel:"Status", sourceLabel:"Source", otherIntervention:"other intervention (not a vaccine)",
         privacyTitle:"Privacy & agent limits",
+        chooseMyths:"True or false? Vaccine myths",
+        mythsTitle:"True or false?", mythsSub:"Tap a statement you often hear to discover what science says.",
+        mythVerdict:"❌ Myth",
+        actionTitle:"👉 Next step: get your child vaccinated",
+        actionText:"Here are the registered facilities closest to you.",
+        actionAskLoc:"Pick your neighborhood to see where to get your child vaccinated:",
         chooseFacility:"Find a health facility",
         facilityTitle:"Find a health facility", facilitySub:"Biyem-Assi sector (Yaoundé) only, for now.",
         facilityCaveat:"⚠️ These facilities are officially registered, but that doesn't guarantee a specific vaccine is available there today. Always confirm by phone or in person before travelling.",
@@ -346,6 +382,7 @@ function applyLang(){
   $("libraryTitle").textContent = t.libraryTitle; $("librarySub").textContent = t.librarySub;
   $("calendarTitle").textContent = t.calendarTitle; $("calendarSub").textContent = t.calendarSub; $("calAgeNext").textContent = t.calAgeNext;
   $("privacyBody").innerHTML = '<h2>' + t.privacyTitle + '</h2>' + t.privacyBody;
+  $("chooseMythsLabel").textContent = t.chooseMyths; $("mythsTitle").textContent = t.mythsTitle; $("mythsSub").textContent = t.mythsSub;
   $("chooseFacilityLabel").textContent = t.chooseFacility;
   $("facilityTitle").textContent = t.facilityTitle; $("facilitySub").textContent = t.facilitySub;
   $("facilityCaveat").textContent = t.facilityCaveat; $("facilityUseGPS").textContent = t.facilityUseGPS;
@@ -371,8 +408,8 @@ async function loadLibrary(){
     const card = document.createElement("details"); card.className = "vaccine-card";
     const sideEffects = (v.side_effects || []).map(esc).join(", ");
     card.innerHTML =
-      '<summary><span class="vname">'+esc(v.name)+'</span><span class="vdisease">'+esc(v.disease_label||"")+'</span></summary>' +
-      '<div class="vbody">' +
+      '<summary><span class="vicon">'+esc(v.icon||"💉")+'</span><span class="vname">'+esc(v.name)+'</span><span class="vdisease">'+esc(v.disease_label||"")+'</span></summary>' +
+      '<div class="vbody">' + (v.hook ? '<div class="vhook">'+esc(v.hook)+'</div>' : '') +
         '<div class="row-line"><b>'+t.statusLabel+' :</b> '+esc(v.pev_status)+'</div>' +
         '<div class="row-line"><b>'+t.routeLabel+' :</b> '+esc(v.route)+'</div>' +
         '<div class="row-line"><b>'+t.sideEffectsLabel+' :</b> '+sideEffects+'</div>' +
@@ -384,9 +421,59 @@ async function loadLibrary(){
   showScreen("library");
 }
 
-function renderFacilities(list){
+function getLocationSilently(){
+  return new Promise(resolve => {
+    if (!navigator.geolocation){ resolve(null); return; }
+    navigator.geolocation.getCurrentPosition(
+      pos => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+      () => resolve(null), { timeout: 6000 });
+  });
+}
+
+async function loadMyths(){
   const t = UI[lang];
-  const body = $("facilityBody"); body.innerHTML = "";
+  const r = await api("/api/misconceptions", { session_id: sessionId });
+  const body = $("mythsBody"); body.innerHTML = "";
+  if (!r.ok){ body.innerHTML = '<p class="sub">' + t.netError + '</p>'; showScreen("myths"); return; }
+  r.data.items.forEach(m => {
+    const card = document.createElement("details"); card.className = "myth-card";
+    card.innerHTML = '<summary><span>💬</span><span>'+esc(m.claim)+'</span></summary>' +
+      '<div class="answer"><span class="verdict">'+t.mythVerdict+'</span><br>'+esc(m.correction)+
+      '<span class="src">'+t.sourceLabel+' : '+esc(m.source)+'</span></div>';
+    body.appendChild(card);
+  });
+  showScreen("myths");
+}
+
+async function renderGuidedFacilities(res){
+  const t = UI[lang];
+  const box = $("guidedResultFacilities"); box.innerHTML = "";
+  if (!res.nearby_facilities && !res.location_needed) return;
+  const banner = document.createElement("div"); banner.className = "action-banner";
+  banner.innerHTML = '<b>'+t.actionTitle+'</b>' + (res.nearby_facilities ? t.actionText : t.actionAskLoc);
+  box.appendChild(banner);
+  const list = document.createElement("div"); list.id = "guidedFacilityList";
+  if (res.nearby_facilities){
+    box.appendChild(list);
+    renderFacilities(res.nearby_facilities.facilities, "guidedFacilityList");
+  } else {
+    const sel = document.createElement("select"); sel.style.cssText = "width:100%;padding:.8rem;border-radius:.8rem;font-size:1rem";
+    const r = await api("/api/facilities/areas", { session_id: sessionId });
+    if (r.ok) r.data.areas.forEach(a => { const o = document.createElement("option"); o.value = a; o.textContent = a; sel.appendChild(o); });
+    const btn = document.createElement("button"); btn.className = "primary"; btn.textContent = t.facilityUseArea;
+    btn.addEventListener("click", async () => {
+      const r2 = await api("/api/facilities/area", { session_id: sessionId, area: sel.value });
+      if (r2.ok) renderFacilities(r2.data.facilities, "guidedFacilityList");
+    });
+    box.appendChild(sel); box.appendChild(btn); box.appendChild(list);
+  }
+  const caveat = document.createElement("div"); caveat.className = "caveat-box"; caveat.textContent = t.facilityCaveat;
+  box.appendChild(caveat);
+}
+
+function renderFacilities(list, containerId){
+  const t = UI[lang];
+  const body = $(containerId || "facilityBody"); body.innerHTML = "";
   if (!list.length){ body.innerHTML = '<p class="sub">' + t.facilityNoResults + '</p>'; return; }
   list.forEach(f => {
     const card = document.createElement("div"); card.className = "facility-card";
@@ -423,6 +510,7 @@ $("facilityUseArea").addEventListener("click", async () => {
   if (r.ok) renderFacilities(r.data.facilities); else $("facilityBody").innerHTML = '<p class="sub">' + UI[lang].netError + '</p>';
 });
 $("chooseFacility").addEventListener("click", goFacility);
+$("chooseMyths").addEventListener("click", loadMyths);
 
 function renderSheet(data){
   const t = UI[lang];
@@ -478,7 +566,7 @@ async function loadCalendarView(){
     const h = document.createElement("h3"); h.textContent = visit.age_label; group.appendChild(h);
     visit.vaccines.forEach(v => {
       const p = document.createElement("div"); p.className = "cal-item";
-      p.innerHTML = '💉 <strong>'+esc(v.name)+'</strong>' + (v.disease_label ? ' — '+esc(v.disease_label) : '');
+      p.innerHTML = esc(v.icon||"💉") + ' <strong>'+esc(v.name)+'</strong>' + (v.disease_label ? ' — '+esc(v.disease_label) : '');
       group.appendChild(p);
     });
     visit.autres.forEach(a => {
@@ -507,6 +595,7 @@ function goChat(){
   $("messages").innerHTML = "";
   addMessage("agent", window._greeting);
   showScreen("chat"); $("input").focus();
+  if (window._userLoc === undefined) getLocationSilently().then(loc => { window._userLoc = loc; });
 }
 function goGuided(){ populateAgeSelect("ageSelect"); showScreen("guidedAge"); }
 function goCalendar(){ populateAgeSelect("calAgeSelect"); $("calendarBody").innerHTML = ""; showScreen("calendarView"); }
@@ -540,11 +629,15 @@ async function submitChecklist(){
     const visit = guidedVisits[+cb.dataset.visit], item = visit.items[+cb.dataset.item];
     checked.push({ vaccine: item.vaccine });
   });
-  const r = await api("/api/guided/submit", { session_id: sessionId, age_months: guidedAgeMonths, checked });
+  if (window._userLoc === undefined) window._userLoc = await getLocationSilently();
+  const payload = { session_id: sessionId, age_months: guidedAgeMonths, checked };
+  if (window._userLoc){ payload.lat = window._userLoc.lat; payload.lon = window._userLoc.lon; }
+  const r = await api("/api/guided/submit", payload);
   if (!r.ok){ alert(UI[lang].netError); return; }
   lastSummaryText = r.data.summary;
   const box = $("guidedResultText"); box.innerHTML = ""; box.appendChild(renderSheet(r.data.data));
   $("resultChat").hidden = !window._chatEnabled;
+  await renderGuidedFacilities(r.data);
   showScreen("guidedResult");
 }
 async function sendMessage(text){
@@ -557,7 +650,9 @@ async function sendMessage(text){
     typing.appendChild(hint);
   }, 4000);
   try {
-    const r = await api("/api/chat", { session_id: sessionId, message: text });
+    const body = { session_id: sessionId, message: text };
+    if (window._userLoc){ body.lat = window._userLoc.lat; body.lon = window._userLoc.lon; }
+    const r = await api("/api/chat", body);
     clearTimeout(slowTimer); typing.remove();
     if (r.ok) addMessage("agent", r.data.reply); else addMessage("system", r.data.error || UI[lang].netError);
   } catch(e){ clearTimeout(slowTimer); typing.remove(); addMessage("system", UI[lang].netError); }

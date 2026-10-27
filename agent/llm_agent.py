@@ -85,14 +85,16 @@ disease_label (ou disease_label_en) déjà fourni par l'outil pour dire contre q
 N'invente JAMAIS cette information toi-même. Exemple à ne jamais reproduire : le VPI n'est PAS un \
 vaccin contre la coqueluche, c'est le vaccin injectable contre la poliomyélite — si tu as un doute \
 sur un vaccin, appelle get_vaccine_info au lieu de deviner.
-- Quand tu identifies des vaccins manquants (get_missing_vaccines), propose spontanément d'aider \
-à trouver où se faire vacciner (find_health_facility) — demande la position GPS ou le nom du \
-quartier si tu ne les as pas encore.
-- find_health_facility ne couvre QUE le secteur Biyem-Assi (Yaoundé) pour l'instant — dis-le \
-clairement si le parent semble être ailleurs. Les structures retournées sont réelles et \
-enregistrées par le ministère, mais cela NE GARANTIT PAS que le vaccin recherché y est disponible \
-aujourd'hui : dis toujours au parent de confirmer sur place ou par téléphone avant de se déplacer. \
-N'invente JAMAIS une structure, une adresse ou une distance qui ne vient pas de l'outil.
+- OBLIGATOIRE — ne t'arrête jamais à "il vous manque tel vaccin". Le résultat de get_missing_vaccines \
+contient soit nearby_facilities (structures déjà trouvées : présente-les IMMÉDIATEMENT avec leur \
+distance, dans la même réponse, sans attendre que le parent demande), soit location_needed=true \
+(demande alors tout de suite le quartier, ou propose d'activer la localisation). Ton but n'est pas \
+d'informer, c'est de guider jusqu'à l'action : quel vaccin, et où aller le faire.
+- Dès que le parent mentionne un quartier ("je suis à Mendong"), appelle record_location.
+- L'orientation ne couvre QUE le secteur Biyem-Assi (Yaoundé) pour l'instant — dis-le si le parent \
+semble être ailleurs. Une structure enregistrée NE GARANTIT PAS que le vaccin y est disponible \
+aujourd'hui : conseille toujours de confirmer par téléphone ou sur place. N'invente JAMAIS une \
+structure, une adresse ou une distance qui ne vient pas d'un outil.
 - Reste strictement anonyme : ne demande jamais de nom. Si le parent donne un prénom ou un nom, ne le répète JAMAIS et ne l'utilise jamais dans tes réponses ; dis simplement \"votre enfant\" (\"your child\" en anglais), et précise gentiment qu'aucun nom n'est nécessaire.
 - Varie tes formulations d'un message à l'autre : ne répète pas toujours la même structure ou les \
 mêmes mots d'ouverture (évite de commencer systématiquement par \"Merci\"). Réagis d'abord à ce que \
@@ -195,6 +197,7 @@ TRACE_LABELS = {
         "get_vaccine_info": lambda args, result: f"🔍 Fiche officielle consultée : {args.get('vaccine_name', '')}",
         "get_hors_pev_info": lambda args, result: f"🔍 Statut PEV / hors-PEV vérifié : {args.get('vaccine_name', '')}",
         "get_other_interventions": lambda args, result: f"🔍 Autres interventions du PEV vérifiées (vitamine A, déparasitage...) — {len(result.get('interventions', []))} trouvée(s)",
+        "record_location": lambda args, result: f"📍 Quartier mémorisé : {args.get('area_name', '')}",
         "find_health_facility": lambda args, result: f"📍 Registre officiel des structures de santé consulté — {len(result.get('facilities', []))} trouvée(s)",
         "check_misconception": lambda args, result: "🔍 Affirmation vérifiée auprès de la base de connaissances officielle" if result.get("found") else None,
         "generate_summary": lambda args, result: "📋 Fiche de suivi générée à partir des données enregistrées",
@@ -207,6 +210,7 @@ TRACE_LABELS = {
         "get_hors_pev_info": lambda args, result: f"🔍 EPI / non-EPI status checked: {args.get('vaccine_name', '')}",
         "get_other_interventions": lambda args, result: f"🔍 Other EPI interventions checked (vitamin A, deworming...) — {len(result.get('interventions', []))} found",
         "find_health_facility": lambda args, result: f"📍 Official health facility registry checked — {len(result.get('facilities', []))} found",
+        "record_location": lambda args, result: f"📍 Neighborhood recorded: {args.get('area_name', '')}",
         "check_misconception": lambda args, result: "🔍 Claim checked against the official knowledge base" if result.get("found") else None,
         "generate_summary": lambda args, result: "📋 Follow-up sheet generated from recorded data",
         "start_new_child": lambda args, result: "🧒 New child recorded, previous profile kept separate",

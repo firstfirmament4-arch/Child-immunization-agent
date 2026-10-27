@@ -15,7 +15,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "tuberculose",
-    "disease_label_en": "tuberculosis"
+    "disease_label_en": "tuberculosis",
+    "icon": "🫁",
+    "hook": "Une seule piqûre à la naissance peut éviter les formes les plus graves de la tuberculose chez le bébé.",
+    "hook_en": "A single injection at birth can prevent the most severe forms of tuberculosis in babies."
   },
   "Polio (VPO)": {
     "route": "orale (gouttes dans la bouche)",
@@ -33,7 +36,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "poliomyélite (orale)",
-    "disease_label_en": "polio (oral)"
+    "disease_label_en": "polio (oral)",
+    "icon": "🦵",
+    "hook": "La polio peut paralyser un enfant à vie — ce vaccin, pris par la bouche, l'en protège.",
+    "hook_en": "Polio can paralyze a child for life — this oral vaccine protects against it."
   },
   "VPI": {
     "route": "intramusculaire",
@@ -51,7 +57,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "poliomyélite (injectable)",
-    "disease_label_en": "polio (injectable)"
+    "disease_label_en": "polio (injectable)",
+    "icon": "🦵",
+    "hook": "Un second rempart contre la polio, en piqûre cette fois, pour renforcer la protection.",
+    "hook_en": "A second shield against polio, this time by injection, to strengthen protection."
   },
   "Penta": {
     "route": "intramusculaire",
@@ -73,7 +82,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "diphtérie, tétanos, coqueluche, hépatite B, Hib",
-    "disease_label_en": "diphtheria, tetanus, whooping cough, hepatitis B, Hib"
+    "disease_label_en": "diphtheria, tetanus, whooping cough, hepatitis B, Hib",
+    "icon": "🛡️",
+    "hook": "Un seul vaccin, cinq maladies évitées : diphtérie, tétanos, coqueluche, hépatite B, Hib.",
+    "hook_en": "One vaccine, five diseases prevented: diphtheria, tetanus, pertussis, hepatitis B, Hib."
   },
   "Pneumo": {
     "route": "intramusculaire",
@@ -93,7 +105,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "infections à pneumocoque",
-    "disease_label_en": "pneumococcal disease"
+    "disease_label_en": "pneumococcal disease",
+    "icon": "🫧",
+    "hook": "Protège contre une cause majeure de pneumonie et de méningite chez les tout-petits.",
+    "hook_en": "Protects against a leading cause of pneumonia and meningitis in young children."
   },
   "Rotavirus": {
     "route": "orale",
@@ -113,7 +128,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "diarrhée à rotavirus",
-    "disease_label_en": "rotavirus diarrhea"
+    "disease_label_en": "rotavirus diarrhea",
+    "icon": "💧",
+    "hook": "Première cause de diarrhées sévères chez le nourrisson — ce vaccin oral réduit fortement le risque.",
+    "hook_en": "The leading cause of severe diarrhea in infants — this oral vaccine greatly reduces the risk."
   },
   "Mosquirix": {
     "route": "intramusculaire",
@@ -133,7 +151,10 @@
     "source": "PEV Cameroun / OMS — terminologie officielle : VAP (Vaccin antipaludique). Introduit le 22 janvier 2024.",
     "confidence": "confirmé (source officielle, 4 doses : 6, 7, 9, 24 mois)",
     "disease_label": "paludisme",
-    "disease_label_en": "malaria"
+    "disease_label_en": "malaria",
+    "icon": "🦟",
+    "hook": "Le tout premier vaccin contre le paludisme, introduit au Cameroun en 2024.",
+    "hook_en": "The world's first malaria vaccine, introduced in Cameroon in 2024."
   },
   "RR (Rougeole-Rubéole)": {
     "route": "intramusculaire ou sous-cutanée",
@@ -153,7 +174,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "rougeole, rubéole",
-    "disease_label_en": "measles, rubella"
+    "disease_label_en": "measles, rubella",
+    "icon": "🌡️",
+    "hook": "La rougeole est l'une des maladies les plus contagieuses au monde — deux doses protègent durablement.",
+    "hook_en": "Measles is one of the most contagious diseases in the world — two doses give lasting protection."
   },
   "VAA (Fièvre jaune)": {
     "route": "sous-cutanée",
@@ -173,7 +197,10 @@
     "source": "PEV Cameroun / OMS",
     "confidence": "confirmé",
     "disease_label": "fièvre jaune",
-    "disease_label_en": "yellow fever"
+    "disease_label_en": "yellow fever",
+    "icon": "🦟",
+    "hook": "Une seule dose protège contre une maladie transmise par moustique, parfois mortelle.",
+    "hook_en": "A single dose protects against a mosquito-borne disease that can be fatal."
   },
   "Hépatite B (dose de naissance)": {
     "route": "intramusculaire",
@@ -193,7 +220,10 @@
     "disease_label": "hépatite B",
     "disease_label_en": "hepatitis B",
     "source": "MINSANTE / PEV Cameroun — calendrier officiel",
-    "confidence": "confirmé (source officielle)"
+    "confidence": "confirmé (source officielle)",
+    "icon": "🩸",
+    "hook": "Donnée dans les premières heures de vie, pour protéger le bébé avant toute exposition.",
+    "hook_en": "Given within the first hours of life, to protect the baby before any exposure."
   },
   "Men A/ACYW135": {
     "route": "intramusculaire",
@@ -213,6 +243,9 @@
     "disease_label": "méningites à méningocoques",
     "disease_label_en": "meningococcal meningitis",
     "source": "MINSANTE / PEV Cameroun — calendrier officiel",
-    "confidence": "confirmé (source officielle)"
+    "confidence": "confirmé (source officielle)",
+    "icon": "🧠",
+    "hook": "Protège contre des méningites bactériennes qui peuvent évoluer très vite et gravement.",
+    "hook_en": "Protects against bacterial meningitis, which can progress very quickly and severely."
   }
 }
